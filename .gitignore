@@ -1,0 +1,14 @@
+# Material oficial del curso: NO entra al repo. Incluye PDF de clases, guías,
+# evaluaciones y pautas (autoría del equipo docente), y sobre todo cualquier
+# planilla de asistencia o lista con nombres de estudiantes.
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*.pptx
+*.docx
+Asistencias*
+capturas/
+node_modules/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,544 @@
+/* ============ Paleta y temas ============ */
+:root{
+  color-scheme:light;
+  --bg:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#6b6a65;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+  --s1:#2a78d6; --s2:#008300; --s3:#e87ba4; --s4:#eda100; --s5:#1baf7a; --s6:#eb6834; --s7:#4a3aa7; --s8:#e34948;
+  --seq100:#cde2fb; --seq200:#9ec5f4; --seq300:#6da7ec; --seq400:#3987e5; --seq500:#256abf; --seq600:#184f95; --seq700:#0d366b;
+  --cell:46px; --cellgap:6px;
+  font-size:16px;
+  /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
+  --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
+  --pendiente:#8b8a85;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    color-scheme:dark;
+    --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+    --s1:#3987e5; --s2:#00a300; --s3:#d55181; --s4:#c98500; --s5:#199e70; --s6:#d95926; --s7:#9085e9; --s8:#e66767;
+    /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
+    --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
+    --pendiente:#8b8a85;
+  }
+}
+:root[data-theme=dark]{
+  color-scheme:dark;
+  --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+  --s1:#3987e5; --s2:#00a300; --s3:#d55181; --s4:#c98500; --s5:#199e70; --s6:#d95926; --s7:#9085e9; --s8:#e66767;
+  /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
+  --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
+  --pendiente:#8b8a85;
+}
+:root.presenta{ font-size:20px; --cell:64px; --cellgap:8px; }
+/* Modo "dentro del libro" (?libro): la página va embebida en un <iframe> en la
+   estantería, que ya pone su propio marco, su título y su botón de cerrar. Sin
+   esto el lector vería el header y el pie repetidos dentro del libro. La clase
+   la pone core.js al cargar. */
+:root.enlibro header,:root.enlibro footer{display:none;}
+:root.enlibro main{padding-top:.2rem; max-width:none;}
+:root.enlibro .module>h2{margin-top:.4rem;}
+
+/* Caja para los planos con iso:true (circunferencias, angulos, triangulos).
+   Con iso el dibujo se dimensiona por el ALTO del lienzo, que es fijo en px,
+   asi que en un escritorio ancho la figura queda chica en el medio de un lienzo
+   enorme y con dos franjas vacias a los lados. Esto le da una medida comoda y
+   la centra. Los controles de la animacion se montan en el mismo nodo, asi que
+   quedan centrados debajo de la figura. */
+.plot{max-width:520px; margin-inline:auto;}
+
+*{box-sizing:border-box}
+/* foco visible: la app se maneja con teclado (1–9, 0, ←/→) y hay que ver dónde se está */
+:focus-visible{outline:2px solid var(--s1); outline-offset:2px; border-radius:4px;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* 1.65 y no 1.5: estas páginas son texto técnico denso (definición + nota +
+     fórmula, una tras otra). Con 1.5 el interlineado quedaba casi igual al
+     espacio entre párrafos y todo se leía como un bloque continuo. */
+  line-height:1.65;
+}
+/* ============ Encabezado y navegación ============
+   Tres bandas apiladas, no una sola fila:
+     1. nombre del ramo (izquierda) · botón de tema (derecha)
+     2. «← Biblioteca», debajo del nombre
+     3. <nav>: la fila de unidades, a todo el ancho de la pantalla
+   La versión anterior era un único flex horizontal donde el nav quedaba
+   apretado en los 2/3 derechos con dos filas de botones y el nombre del ramo
+   flotando solo a la izquierda. */
+header{
+  position:sticky; top:0; z-index:50; background:var(--surface);
+  border-bottom:1px solid var(--border); padding:.5rem 1rem .5rem;
+  display:flex; flex-direction:column; gap:.4rem;
+}
+.hdr-id{display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;}
+.hdr-id>div{min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:.3rem;}
+header h1{font-size:1.05rem; margin:0; line-height:1.2;}
+header h1 small{color:var(--muted); font-weight:500;}
+/* «← Biblioteca»: píldora discreta bajo el nombre del ramo. No usa .btn porque
+   ese peso visual compite con la fila de unidades, que es la navegación real. */
+.volver{
+  display:inline-flex; align-items:center; gap:.3rem; text-decoration:none;
+  border:1px solid var(--border); background:transparent; color:var(--ink2);
+  font-size:.76rem; padding:.16rem .6rem; border-radius:999px;
+  transition:background .15s, color .15s;
+}
+.volver:hover{background:color-mix(in srgb, var(--ink) 6%, transparent); color:var(--ink);}
+.hdrbtns{display:flex; gap:.3rem; flex:0 0 auto;}
+.hdrbtns button{
+  border:1px solid var(--border); background:var(--surface); color:var(--ink2);
+  font:inherit; font-size:.8rem; padding:.28rem .6rem; border-radius:8px; cursor:pointer;
+}
+.hdrbtns button:hover{color:var(--ink);}
+@keyframes recpulse{50%{box-shadow:0 0 0 4px color-mix(in srgb, var(--s8) 25%, transparent);}}
+
+main{max-width:1150px; margin:0 auto; padding:1rem 1.2rem 4rem;}
+.module{display:none;}
+.module.active{display:block; animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0; transform:translateY(4px)} to{opacity:1}}
+.module>h2{margin:1.6rem 0 .4rem; font-size:1.75rem; line-height:1.2; letter-spacing:-.02em;}
+.lead{color:var(--ink2); font-size:1.06rem; line-height:1.6; margin:.4rem 0 2.2rem; max-width:62ch;}
+
+/* ============ Tarjetas y controles ============ */
+.card{background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:1.5rem 1.7rem; margin:1.6rem 0;}
+/* La barrita de color marca "esto es el título de una tarjeta" de un vistazo,
+   sin subir el tamaño de fuente: en una página con h2 (tema), h3 (tarjeta) y
+   <b> dentro del cuerpo, el peso solo no alcanzaba para separar los niveles. */
+.card>h3{margin:0 0 1.1rem; font-size:1.18rem; font-weight:700;
+  letter-spacing:-.01em; line-height:1.3; padding-left:.95rem; position:relative;}
+.card>h3::before{
+  content:""; position:absolute; left:0; top:.18em;
+  width:.28rem; height:1em; border-radius:2px; background:var(--s1);
+}
+.card>h3 code{font-size:.95em;}
+
+/* ---- Ritmo de lectura dentro de una tarjeta ----
+   Tres registros, y hay que poder distinguirlos sin leerlos:
+     principal  <p> suelto        — 1rem, var(--ink), medida corta
+     secundario .note             — .9rem, var(--ink2)
+     fuente     .fuente           — .78rem, var(--muted), separada por filete
+   El agrupamiento lo hace el espacio, no más decoración: cada bloque abre
+   1.15rem, pero un bloque seguido por su .note cierra el aire (regla :has más
+   abajo) para que "afirmación + su comentario" se lean como una sola unidad y
+   el aire grande caiga ENTRE unidades. */
+.card p{margin:0 0 1.15rem; max-width:66ch;}
+.card ul,.card ol{margin:0 0 1.25rem; padding-left:1.45rem; max-width:68ch;}
+.card li{margin:0 0 .55rem;}
+.card li:last-child{margin-bottom:0;}
+.card li>ul,.card li>ol{margin:.5rem 0 0;}
+.card>*:last-child{margin-bottom:0;}
+
+/* Ejercicios plegables: sin caja propia se leían como texto suelto pegado al
+   resto de la tarjeta. El marcador del <summary> queda en color de acento. */
+.card details{
+  border:1px solid var(--border); border-radius:12px;
+  background:color-mix(in srgb, var(--ink) 2%, transparent);
+  padding:.9rem 1.1rem; margin:0 0 .7rem;
+}
+.card details[open]{background:color-mix(in srgb, var(--ink) 3.5%, transparent);}
+.card summary{cursor:pointer; font-weight:600; color:var(--ink); line-height:1.5;}
+.card summary::marker{color:var(--s1);}
+.card details[open]>summary{
+  margin-bottom:.95rem; padding-bottom:.75rem; border-bottom:1px solid var(--border);
+}
+.card details>*:last-child{margin-bottom:0;}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:1.1rem 0;}
+.controls label{font-size:.85rem; color:var(--ink2);}
+.btn{
+  border:1px solid var(--border); background:var(--surface); color:var(--ink);
+  font:inherit; font-size:.85rem; padding:.32rem .7rem; border-radius:8px; cursor:pointer;
+  transition:background .15s;
+}
+.btn:hover{background:color-mix(in srgb, var(--ink) 6%, var(--surface));}
+.btn.on{background:color-mix(in srgb, var(--s1) 18%, var(--surface)); border-color:var(--s1); font-weight:600;}
+.btn.primary{background:var(--s1); border-color:var(--s1); color:#fff; font-weight:600;}
+.btn.primary:hover{background:color-mix(in srgb, var(--s1) 85%, var(--ink));}
+select,input[type=number],input[type=text]{
+  font:inherit; font-size:.85rem; padding:.28rem .45rem; border-radius:8px;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink);
+}
+input[type=range]{accent-color:var(--s1); vertical-align:middle;}
+.code{
+  font-family:ui-monospace,Consolas,"Cascadia Mono",monospace; font-size:.85rem;
+  background:color-mix(in srgb, var(--ink) 5%, var(--surface));
+  border:1px solid var(--border);
+  border-radius:9px; padding:.65rem .9rem; overflow-x:auto; white-space:pre; margin:.6rem 0;
+  line-height:1.55;
+}
+.code b{color:var(--s1); font-weight:700;}
+/* Fórmula inline (dentro de un <li>/<p>, no en .formula/.pasos-tex) cuyo KaTeX
+   no tiene ningún punto de quiebre propio (p.ej. un conjunto enumerado largo,
+   $\{CCCC,\ CCCS,\dots\}$): sin esta clase, el span inline no puede encogerse
+   ni partirse, y si no entra en el ancho disponible se sale de la página en
+   vez de ajustarse. display:inline-block + overflow-x:auto le da scroll
+   interno propio (mismo patrón que .formula/.pasos-tex/.code), sin tocar la
+   fórmula en sí ni la tipografía.  */
+.mathinline{display:inline-block; max-width:100%; overflow-x:auto; vertical-align:bottom;}
+.note{color:var(--ink2); font-size:.9rem; line-height:1.65; max-width:70ch;}
+.note b{color:var(--ink);}
+/* una .note cierra su grupo: el aire grande va DESPUÉS de ella, no antes */
+.card .note{margin-bottom:1.8rem;}
+/* Lo que precede a una .note se le pega. Va después de .card p / .card .note a
+   propósito: misma especificidad (0,2,0 — :has() toma la de su argumento), así
+   que gana por orden de aparición. Alcanza también a .note+.note (notas
+   encadenadas: una sola unidad) y a h3+.note (bajada de la tarjeta). */
+.card *:has(+ .note){margin-bottom:.55rem;}
+.msg{font-size:.9rem; font-weight:600; min-height:1.4em; margin:.4rem 0;}
+.msg.err{color:var(--s8);}
+.msg.okc{color:var(--s2);}
+.chip{display:inline-block; font-size:.8rem; font-weight:600; padding:.12rem .55rem;
+  border-radius:999px; border:1px solid var(--border); margin:.1rem;}
+.legend{display:flex; flex-wrap:wrap; gap:.35rem .8rem; align-items:center; font-size:.8rem; color:var(--ink2); margin:.4rem 0;}
+.legend .sw{display:inline-block; width:.85em; height:.85em; border-radius:4px; vertical-align:-2px; margin-right:.3em; border:1px solid var(--border);}
+
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+/* ============ Stepper ============ */
+.stepper{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:1.1rem 0 .4rem;}
+.stepper .cnt{font-size:.8rem; color:var(--muted); min-width:5.2em; text-align:center;}
+.stepdesc{font-size:.94rem; color:var(--ink2); min-height:2.6em; margin:.4rem 0 1.1rem; max-width:72ch;}
+.stepdesc b{color:var(--ink);}
+
+/* ============ SVG ============ */
+svg text{fill:var(--muted); font-family:inherit; font-size:11px;}
+svg .axisline{stroke:var(--axis);}
+svg .gridline{stroke:var(--grid);}
+.flexcols{display:flex; flex-wrap:wrap; gap:1.4rem; align-items:flex-start;}
+.flexcols>div{min-width:0;}
+
+footer{max-width:1150px; margin:0 auto; padding:0 1.2rem 2rem; color:var(--muted); font-size:.8rem;}
+kbd{border:1px solid var(--border); border-bottom-width:2px; border-radius:5px; padding:0 .35em; font-size:.85em; background:var(--surface);}
+
+/* ============ Móvil ============ */
+@media (max-width:700px){
+  :root{--cell:38px; --cellgap:5px;}
+  header{padding:.45rem .6rem; gap:.3rem;}
+  header h1{font-size:.95rem;}
+  header h1 small{display:none;}
+  /* nav (contenedor de .unidad-nav) es un flex item de header, que en móvil
+     sigue siendo columna. min-width:0 es imprescindible: sin él, nav no
+     encoge más allá del min-content de la grilla de unidades —que con 5
+     columnas es enorme— y termina empujando el ancho de toda la página,
+     aunque .unidad-nav ya tenga su propio overflow-x resuelto más abajo. */
+  nav{min-width:0;}
+  main{padding:.6rem .7rem 3rem;}
+  .module>h2{font-size:1.4rem; margin-top:1rem;}
+  .lead{font-size:1rem; margin-bottom:1.5rem;}
+  .card{padding:1.1rem 1.05rem; border-radius:14px; margin:1.2rem 0;}
+  .card>h3{font-size:1.08rem; margin-bottom:.9rem;}
+  .card details{padding:.75rem .85rem;}
+  /* .fuente no lleva override acá: su padding-right es max(0px, 100%-86ch),
+     que en un teléfono ya da 0. Una regla en este bloque además perdería, porque
+     la declaración de .card .fuente aparece más abajo en la hoja. */
+  .temas-lista{grid-template-columns:1fr;}
+  .flexcols{gap:.9rem;}
+  .code{font-size:.78rem;}
+  .kbdhint{display:none;} /* atajos de teclado no aplican en táctil */
+}
+/* dedos, no cursores: targets más generosos */
+@media (pointer:coarse){
+  .btn{padding:.5rem .85rem;}
+  .unidad-btn{padding:.4rem .7rem;}
+  .tema-op{padding:.5rem .6rem;}
+  .volver{padding:.3rem .7rem;}
+  select,input[type=number],input[type=text]{padding:.45rem .55rem;}
+  input[type=range]{min-height:2.2rem;}
+}
+
+/* ============ Nav de unidades con panel desplegable ============
+   Una sola fila que ocupa TODO el ancho, con las unidades repartidas en
+   columnas iguales (grid-auto-columns:1fr — con flex quedaban apelotonadas a
+   la izquierda dejando el resto vacío). Los temas ya no viven en una segunda
+   fila permanente: caen en un panel al pasar el cursor por su unidad. */
+.unidad-nav{
+  display:grid; grid-auto-flow:column; grid-auto-columns:1fr;
+  gap:.3rem; width:100%; min-width:0;
+}
+.unidad{position:relative; min-width:0;}
+/* min-height fija: el botón de la unidad activa lleva DOS líneas (nombre +
+   tema actual) y el resto una sola. Sin esta altura común, la fila cambiaría
+   de alto —y empujaría la página— cada vez que se cambia de unidad. */
+.unidad-btn{
+  width:100%; min-height:2.65rem; cursor:pointer;
+  display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:.05rem;
+  border:1px solid transparent; background:transparent; color:var(--muted);
+  font:inherit; text-align:left; padding:.25rem .6rem; border-radius:10px;
+  transition:background .15s, border-color .15s, color .15s;
+}
+.unidad-btn:hover{background:color-mix(in srgb, var(--ink) 6%, transparent);}
+.unidad.on .unidad-btn{
+  color:var(--ink);
+  background:color-mix(in srgb, var(--sem-actual) 18%, var(--surface));
+  border-color:color-mix(in srgb, var(--sem-actual) 40%, transparent);
+}
+/* las dos líneas se truncan en vez de envolver: una unidad con nombre largo no
+   debe poder estirar el alto de toda la barra */
+.u-nombre,.u-tema{max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.u-nombre{font-size:.78rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase;}
+.u-tema{font-size:.76rem; font-weight:500; color:var(--ink2);}
+.u-tema:empty{display:none;}
+
+/* El panel arranca pegado al botón (top:100%, sin margin): un hueco de aire
+   entre ambos cortaría el hover al bajar el cursor. La separación visual la dan
+   el borde y la sombra. */
+.unidad-menu{
+  display:none; position:absolute; top:100%; left:0; z-index:60;
+  grid-template-columns:repeat(var(--cols,2), minmax(0,1fr)); gap:.15rem;
+  min-width:100%; width:max-content; max-width:min(40rem,92vw);
+  padding:.4rem; background:var(--surface);
+  border:1px solid var(--border); border-radius:12px;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+/* .der lo pone core.js cuando el panel, anclado a la izquierda, se saldría por
+   el borde derecho de la pantalla. No alcanza con :last-child: con 5 unidades
+   el panel ancho de la penúltima (9 temas en 3 columnas) ya se pasa. */
+.unidad-menu.der{left:auto; right:0;}
+@media (hover:hover){ .unidad:hover .unidad-menu{display:grid;} }
+/* :focus-within abre con teclado; .abierto es el modo táctil (lo alterna core.js) */
+.unidad:focus-within .unidad-menu,
+.unidad.abierto .unidad-menu{display:grid;}
+
+.tema-op{
+  display:flex; align-items:baseline; gap:.5rem; width:100%; text-align:left;
+  border:1px solid transparent; background:transparent; color:var(--ink);
+  font:inherit; font-size:.85rem; line-height:1.35; padding:.36rem .55rem;
+  border-radius:8px; cursor:pointer; transition:background .12s, border-color .12s;
+}
+/* el número es el mismo atajo de teclado 1–9; tabular-nums para que la columna
+   de números quede alineada aunque haya de una y dos cifras */
+.tema-op .n{
+  flex:0 0 1rem; text-align:right; font-size:.72rem; font-weight:700;
+  color:var(--muted); font-variant-numeric:tabular-nums;
+}
+.tema-op .t{min-width:0;}
+.tema-op:hover{background:color-mix(in srgb, var(--s1) 9%, transparent);}
+.tema-op.on{
+  background:color-mix(in srgb, var(--s1) 15%, var(--surface));
+  border-color:color-mix(in srgb, var(--s1) 45%, transparent); font-weight:600;
+}
+.tema-op.on .n{color:var(--s1);}
+.tema-op.pend{color:var(--pendiente); font-style:italic;}
+.tema-op.pend::after{content:"○"; margin-left:auto; padding-left:.4rem; font-size:.7rem;}
+
+@media (max-width:700px){
+  /* En celular no entran 5 columnas iguales legibles: la fila pasa a ancho
+     mínimo por unidad y scrollea horizontal (core.js trae la activa al centro
+     con scrollIntoView). min-width:0 es imprescindible para que la grilla
+     pueda encoger por debajo de su min-content y el overflow-x llegue a
+     activarse. Esta regla va DESPUÉS de la declaración base de .unidad-nav
+     (mismo nivel de especificidad: gana la última de la hoja). */
+  .unidad-nav{grid-auto-columns:minmax(8.5rem,auto); overflow-x:auto; scrollbar-width:none;}
+  .unidad-nav::-webkit-scrollbar{display:none;}
+  /* El panel NO puede quedar dentro de .unidad-nav en móvil: overflow-x:auto
+     computa overflow-y a auto, así que recorta verticalmente todo lo que
+     cuelgue del contenedor — el panel se marcaba abierto pero no se veía.
+     position:fixed lo saca de ese recorte (un fixed solo lo clipean ancestros
+     con transform/filter, y acá no hay). De paso queda como hoja a todo el
+     ancho bajo el header, que es lo que se quiere en un teléfono.
+     --hdr-h lo mide core.js: el header es sticky y su alto cambia con el
+     nombre del ramo. */
+  .unidad-menu{
+    position:fixed; top:calc(var(--hdr-h,6.5rem) + .3rem); left:.6rem; right:.6rem;
+    width:auto; min-width:0; max-width:none;
+    grid-template-columns:1fr; max-height:min(60vh,26rem); overflow-y:auto;
+  }
+  .unidad-menu.der{left:.6rem; right:.6rem;}
+}
+
+/* ============ Fórmulas y derivaciones ============ */
+.formula{
+  background:color-mix(in srgb, var(--s1) 7%, var(--surface));
+  border-left:3px solid color-mix(in srgb, var(--s1) 60%, transparent);
+  border-radius:0 12px 12px 0; padding:1.15rem 1.35rem; margin:1.5rem 0;
+  overflow-x:auto; overflow-y:hidden;
+}
+.formula .katex-display{margin:0;}
+.pasos{display:flex; flex-direction:column; gap:.3rem; margin:1.3rem 0;}
+.pasos-linea{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; align-items:baseline;
+  padding:.62rem .9rem; border-radius:8px;
+  opacity:.18; transition:opacity .35s, background .35s;
+}
+.pasos-linea.vista{opacity:1;}
+.pasos-linea.actual{background:color-mix(in srgb, var(--s4) 16%, transparent);}
+/* max-width:100% además de min-width:0: cuando .pasos-tex queda solo en su
+   propia línea (envuelto por flex-wrap) y su fórmula KaTeX no tiene ningún
+   punto de quiebre (una sola línea sin \qquad ni fracciones separables), el
+   navegador la dimensiona por el ancho de su contenido en vez de encogerla
+   al espacio disponible — el scroll interno (overflow-x:auto) nunca llega a
+   activarse porque la caja ya creció para no necesitarlo, y esa caja de más
+   se sale de .pasos-linea (que sí tiene overflow visible) hacia el resto de
+   la página. max-width:100% fuerza la caja al ancho del contenedor, y ahí
+   overflow-x:auto sí entra a tallar. Visto en fórmulas largas de una sola
+   línea (p.ej. "dP=166,2(-1)+...=-199,44") en viewport de teléfono. */
+.pasos-tex{flex:1 1 20rem; min-width:0; max-width:100%; overflow-x:auto; overflow-y:hidden;}
+.pasos-nota{flex:1 1 16rem; font-size:.88rem; line-height:1.6; color:var(--ink2); min-width:0; max-width:100%;}
+.pasos-nota b{color:var(--ink);}
+
+/* ============ Lienzos de las primitivas ============ */
+.lienzo{
+  display:block; width:100%; border:1px solid var(--border); border-radius:10px;
+  background:color-mix(in srgb, var(--ink) 2%, var(--surface)); margin:1.2rem 0;
+}
+.arbol{margin:1.2rem 0; overflow-x:auto;}
+.arbol-nodo{
+  display:inline-flex; align-items:center; justify-content:center; text-align:center;
+  border:1px solid var(--border); border-radius:9px; padding:.35rem .7rem;
+  background:var(--surface); font-size:.88rem; transition:background .3s, box-shadow .3s;
+}
+.arbol-nodo.hl{background:color-mix(in srgb, var(--s4) 26%, var(--surface)); box-shadow:0 0 0 2px var(--s4);}
+.tabla-va{overflow-x:auto; margin:1.2rem 0;}
+.tabla-va table{border-collapse:collapse; font-variant-numeric:tabular-nums;}
+.tabla-va th,.tabla-va td{
+  border:1px solid var(--border); padding:.35rem .7rem; font-size:.88rem;
+  text-align:center; transition:background .3s, box-shadow .3s;
+}
+.tabla-va th{background:color-mix(in srgb, var(--s1) 14%, var(--surface)); font-weight:700;}
+.tabla-va td.hl{background:color-mix(in srgb, var(--s4) 28%, var(--surface)); box-shadow:inset 0 0 0 2px var(--s4);}
+.tabla-va td.ok{background:color-mix(in srgb, var(--s2) 20%, var(--surface));}
+.barras{margin:1.2rem 0;}
+
+/* ============ Diagramas entidad-relación (mer.js) ============ */
+/* El SVG tiene viewBox de 1000 unidades de ancho y escala solo, así que no
+   necesita repintado ni al cambiar de tema ni al redimensionar: los colores
+   son var() y el navegador reescala el viewBox. Lo único que sí necesita es
+   un ancho mínimo — a 400px de pantalla, un texto de 15 unidades del viewBox
+   quedaría en 6px, ilegible. Por eso min-width + scroll horizontal propio,
+   igual que .tabla-va: el diagrama se desliza, la página no. */
+.mer{margin:1.4rem 0; overflow-x:auto;}
+.mer-svg{display:block; width:100%; min-width:660px; height:auto;}
+
+.mer-entidad{fill:var(--surface); stroke:var(--s1); stroke-width:2;}
+.mer-rel{fill:color-mix(in srgb, var(--s4) 14%, var(--surface)); stroke:var(--s4); stroke-width:2;}
+.mer-attr{fill:color-mix(in srgb, var(--s5) 12%, var(--surface)); stroke:var(--s5); stroke-width:1.6;}
+.mer-attr.derivado{stroke-dasharray:5 4;}
+.mer-linea{stroke:var(--axis); stroke-width:1.6;}
+.mer-linea.punteada{stroke-dasharray:5 4;}
+.mer-cardfondo{fill:var(--surface); stroke:var(--border); stroke-width:1;}
+
+.mer-txt{fill:var(--ink); font-family:inherit; font-size:15px;}
+.mer-txt.fuerte{font-weight:700;}
+.mer-txt.pk{text-decoration:underline; text-underline-offset:2px;}
+.mer-txt.comp{font-style:italic;}
+.mer-txt.card{font-weight:800; font-size:14px;}
+
+/* Un nodo resaltado por el Stepper: mismo ámbar que .arbol-nodo.hl y
+   .tabla-va td.hl, para que "esto es lo que estamos mirando ahora" se lea
+   igual en las tres primitivas. */
+.mer-nodo :is(.mer-entidad,.mer-rel,.mer-attr){transition:fill .3s, stroke .3s;}
+.mer-nodo.hl :is(.mer-entidad,.mer-rel,.mer-attr){
+  fill:color-mix(in srgb, var(--s4) 30%, var(--surface)); stroke:var(--s4); stroke-width:3;
+}
+/* Revelado paso a paso: visibility además de opacity para que un nodo todavía
+   no revelado tampoco lo lea un lector de pantalla. */
+.mer-nodo,.mer-linea{transition:opacity .35s;}
+.oculto{opacity:0; visibility:hidden;}
+
+/* ============ Diccionario de datos (mer.js) ============ */
+/* .tabla-va centra todo (está pensada para tablas de probabilidad, que son
+   numéricas). Acá las tres primeras columnas son texto y se leen mucho mejor
+   alineadas a la izquierda; solo PK/FK/Nulo quedan centradas. */
+.dicc td{text-align:left;}
+.dicc td.centro{text-align:center; font-weight:700;}
+.dicc th{white-space:nowrap;}
+
+/* ============ Fichas de temas pendientes ============ */
+.ficha-pendiente{
+  border:1px dashed var(--axis); border-radius:16px; padding:1.5rem 1.7rem; margin:1.5rem 0;
+  background:color-mix(in srgb, var(--ink) 2.5%, var(--surface));
+}
+.ficha-pendiente h3{margin:0 0 .9rem; font-size:1.05rem; color:var(--ink2);}
+.ficha-pendiente ul{margin:.5rem 0 1.3rem; padding-left:1.3rem; color:var(--ink2); font-size:.92rem;}
+.ficha-pendiente li{margin-bottom:.45rem;}
+.ficha-pendiente .puente{
+  display:inline-block; margin-top:.3rem; font-size:.88rem; font-weight:600;
+  color:var(--s1); text-decoration:none; border-bottom:1px solid currentColor;
+}
+/* Tercer registro: la atribución. El filete la despega del contenido y la
+   marca como pie de tarjeta; sin cursiva, porque son párrafos largos y la
+   cursiva los vuelve más difíciles de leer, no menos importantes. */
+.fuente{
+  margin:1.9rem 0 0; padding-top:.75rem; border-top:1px solid var(--border);
+  font-size:.78rem; line-height:1.55; color:var(--muted);
+}
+/* El filete tiene que cruzar la tarjeta entera (es el pie de la tarjeta), pero
+   el texto no debe llegar a 150 caracteres por línea. max-width cortaría también
+   el borde; el padding-right no: border-top abarca la caja de borde, así que la
+   línea sigue completa y solo el texto se angosta. El max() lo desactiva en
+   pantallas donde la tarjeta ya mide menos de 86ch.
+   OJO con la especificidad: tiene que ser `.card .fuente` (0,2,0) y no `.fuente`
+   (0,1,0), porque `.card p` (0,1,1) le gana a esta última. Con `.fuente` a
+   secas, max-width:66ch seguía vigente y, como todo el sitio es border-box, el
+   padding-right se comía la caja entera: el texto salía a una palabra por
+   línea. */
+.card .fuente{
+  max-width:none; padding-right:max(0px, calc(100% - 86ch));
+}
+.fuente.suelta{border-top:none; padding-top:0; margin-top:1.2rem;}
+
+/* ============ Mapa del curso (módulo Inicio) ============ */
+/* Índice por unidad: solo los nombres de los temas, en columnas. Es una
+   pantalla para orientarse de un vistazo, así que no lleva descripciones —
+   el texto largo vive dentro de cada tema. */
+/* Cada tema es una casilla con borde propio, no texto suelto dentro de la
+   tarjeta grande de la unidad: con el borde permanente se lee de un vistazo
+   cuántos temas hay y dónde termina cada uno. El hover sigue subiendo el
+   borde y el fondo a color de acento. */
+.temas-lista{display:grid; grid-template-columns:repeat(auto-fill,minmax(16.5rem,1fr)); gap:.5rem;}
+.tema-item{
+  display:block; padding:.6rem .8rem; border-radius:10px; text-decoration:none;
+  color:var(--ink); border:1px solid var(--border); font-size:.96rem; font-weight:600;
+  background:color-mix(in srgb, var(--ink) 2%, transparent);
+  transition:background .15s, border-color .15s;
+}
+.tema-item:hover{
+  background:color-mix(in srgb, var(--s1) 8%, transparent);
+  border-color:color-mix(in srgb, var(--s1) 35%, transparent);
+}
+.tema-item.pend{color:var(--pendiente); font-weight:500; font-style:italic;}
+.tema-item.pend::before{content:"○ ";}
+
+@media (max-width:700px){
+  /* .pasos-linea pasa a columna en el teléfono (una caja de fórmula arriba,
+     la nota abajo — no entran una al lado de la otra). Eso cambia el eje
+     principal del flex de horizontal a vertical, y flex:1 1 20rem/16rem
+     (pensado como ancho mínimo en la disposición horizontal) pasa a leerse
+     como ALTO mínimo: cada caja queda fija en 320px/256px de alto sin
+     importar que el contenido real mida ~24px. flex:0 1 auto vuelve a
+     dimensionar por el contenido (alto natural), en las dos disposiciones. */
+  .pasos-linea{flex-direction:column; gap:.2rem;}
+  .pasos-tex,.pasos-nota{flex:0 1 auto;}
+  /* Indicio visual de scroll horizontal en .pasos-tex: una fórmula KaTeX
+     más ancha que la pantalla del teléfono va a existir siempre, por más
+     que Pasos() la parta en pasos cortos, y .pasos-tex ya tiene scroll
+     interno (overflow-x:auto, ver arriba) — pero sin ninguna señal el
+     usuario no sabe que puede deslizar y la lee como "cortada". Técnica de
+     sombra de scroll con doble capa de degradé por borde: una capa con
+     background-attachment:local (viaja con el CONTENIDO, ancla en sus dos
+     extremos verdaderos) tapa la sombra; otra con :scroll (fija al
+     VIEWPORT de la caja, ancla en sus dos bordes visibles) la dibuja. Donde
+     el contenido no excede la caja ambos extremos coinciden y la tapa cubre
+     toda sombra; donde sí excede, la tapa del lado ya recorrido se corre
+     fuera de vista y deja ver la sombra de ESE lado nomás. Sin JS: la caja
+     de arriba (--pasos-cover) sigue el fondo real detrás de .pasos-tex,
+     que cambia con .actual (franja ámbar) — ver override debajo. */
+  .pasos-tex,.formula{
+    --pasos-cover:var(--surface);
+    background-repeat:no-repeat;
+    background-size:22px 100%, 22px 100%, 10px 100%, 10px 100%;
+    background-position:left, right, left, right;
+    background-attachment:local, local, scroll, scroll;
+    background-image:
+      linear-gradient(to right, var(--pasos-cover) 45%, transparent),
+      linear-gradient(to left, var(--pasos-cover) 45%, transparent),
+      linear-gradient(to right, color-mix(in srgb, var(--ink) 25%, transparent), transparent),
+      linear-gradient(to left, color-mix(in srgb, var(--ink) 25%, transparent), transparent);
+  }
+  .pasos-linea.actual .pasos-tex{--pasos-cover:color-mix(in srgb, var(--s4) 16%, var(--surface));}
+  /* .formula tiene su propio fondo (celeste, no var(--surface) liso) — la
+     tapa que oculta la sombra en los bordes sin scroll debe seguir ESE
+     color, si no repite el mismo desajuste visto en .pasos-tex. */
+  .formula{--pasos-cover:color-mix(in srgb, var(--s1) 7%, var(--surface));}
+}
