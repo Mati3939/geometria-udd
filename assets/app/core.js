@@ -162,8 +162,11 @@ function buildShell(){
   unidadesDe().forEach(u=>{
     const temas=temasDe(u);
     const et=u==='inicio'?'🏠 Inicio':('Unidad '+u+(window.CURSO.unidades[u]?' · '+window.CURSO.unidades[u]:''));
-    const sub=el('span',{class:'u-tema'});
-    const btn=el('button',{class:'unidad-btn',type:'button'},el('span',{class:'u-nombre'},et),sub);
+    /* El botón de la unidad es de UNA línea. Antes llevaba una segunda con el
+       tema actual, y eso obligaba a darle a toda la fila el alto de dos líneas
+       —el header sticky se comía el 11% de la pantalla—. El tema en el que uno
+       está ya se ve en el <h2> del contenido y marcado dentro del panel. */
+    const btn=el('button',{class:'unidad-btn',type:'button'},el('span',{class:'u-nombre'},et));
     /* 2 columnas hasta 6 temas, 3 de ahí en adelante: así ningún panel pasa de
        tres filas de alto (el máximo hoy son los 9 temas de la Unidad II de
        Base de Datos). Va como custom property y no como style inline suelto
@@ -224,7 +227,7 @@ function buildShell(){
       }
     };
     fila.append(caja);
-    UNIDAD_NODOS[u]={caja,btn,sub,menu};
+    UNIDAD_NODOS[u]={caja,btn,menu};
   });
   /* tocar fuera cierra el panel abierto en táctil (en escritorio lo cierra el
      propio hover, así que esto no molesta) */
@@ -238,14 +241,11 @@ function buildShell(){
   });
 }
 
-/* Marca la unidad activa y, dentro de su botón, el tema en el que estás: sin la
-   fila .tema-nav esta es la única pista permanente de dónde está uno parado.
-   Se omite en unidades de un solo tema (Inicio), donde repetiría la etiqueta. */
+/* Marca la unidad activa y, dentro de su panel, el tema actual. */
 function marcarUnidad(m){
   for(const u in UNIDAD_NODOS){
     const n=UNIDAD_NODOS[u], on=(u===m.unidad);
     n.caja.classList.toggle('on',on);
-    n.sub.textContent=(on&&temasDe(u).length>1)?m.title:'';
     n.menu.querySelectorAll('.tema-op').forEach(b=>b.classList.toggle('on',b.dataset.mod===m.id));
   }
 }

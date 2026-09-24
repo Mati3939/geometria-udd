@@ -4,15 +4,15 @@
    a cubrir). */
 registerModule({
   id:'inicio', title:'Mapa del ramo', unidad:'inicio',
-  lead:'Todos los temas de Geometría, agrupados por unidad. Entrá al que te complique: cada uno arranca con la idea dibujada y en movimiento, no con la fórmula.',
+  lead:'Todos los temas de Geometría, agrupados por unidad. Cada uno parte con la idea dibujada y en movimiento, y recién después aparece la fórmula.',
   build(sec){
     const C=window.CURSO;
 
     const intro=el('div',{class:'card'});
     intro.append(el('h3',{},'Cómo usar esto'));
-    intro.append(el('p',{},'Elegí una unidad arriba y, dentro, el tema. Cada tema es una pantalla sola: las figuras se mueven con ',el('b',{},'▶ Reproducir'),' y los deslizadores cambian los datos del dibujo, así que conviene mover todo y ver qué cambia.'));
-    intro.append(el('p',{class:'note'},'Atajos de teclado: las teclas $1$ a $9$ saltan entre los temas de la unidad en la que estés, y ',el('b',{},'Inicio'),' vuelve acá. El botón 🌗 de arriba a la derecha cambia entre claro y oscuro.'));
-    intro.append(el('p',{class:'note'},'Acá no hay ejercicios resueltos paso a paso: para eso están las guías y las pautas del curso en Canvas, que en papel se siguen mejor. Esto es para ',el('b',{},'ver'),' de dónde sale cada fórmula.'));
+    intro.append(el('p',{},'En la barra de arriba se elige la unidad y, dentro de ella, el tema. Cada tema es una pantalla sola: las figuras se mueven con ',el('b',{},'▶ Reproducir'),' y los deslizadores cambian los datos del dibujo. Conviene moverlos y observar qué cambia.'));
+    intro.append(el('p',{class:'note'},'Atajos de teclado: las teclas $1$ a $9$ saltan entre los temas de la unidad actual, y ',el('b',{},'Inicio'),' vuelve a esta pantalla. El botón 🌗 de arriba a la derecha alterna entre claro y oscuro.'));
+    intro.append(el('p',{class:'note'},'Cada tema tiene su propia dirección, así que se puede compartir el enlace de uno puntual.'));
     sec.append(intro);
 
     const unidades=[...new Set(window.MODULES.map(m=>m.unidad))].filter(u=>u!=='inicio');

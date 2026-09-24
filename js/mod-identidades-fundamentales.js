@@ -46,7 +46,7 @@ registerModule({
     },{duracion:8});
     c1.append(leerC1);
 
-    c1.append(el('p',{},'Mirá el triángulo que forman el radio, el cateto azul y el cateto verde: la hipotenusa mide $1$ porque es un radio. Pitágoras sobre ese triángulo ',el('b',{},'es'),' la primera identidad pitagórica, y por eso vale para todo $\\theta$:'));
+    c1.append(el('p',{},'En el triángulo que forman el radio, el cateto azul y el cateto verde, la hipotenusa mide $1$ porque es un radio. Pitágoras sobre ese triángulo ',el('b',{},'es'),' la primera identidad pitagórica, y por eso vale para todo $\\theta$:'));
     c1.append(el('div',{class:'formula',html:'$$\\operatorname{sen}^2\\theta+\\cos^2\\theta=1$$'}));
     c1.append(el('p',{class:'note'},'Por eso el contador de arriba marca $1{,}000$ en todo momento, sin importar en qué cuadrante esté el punto: no es una fórmula que haya que memorizar aparte, es la ecuación de la circunferencia escrita con otros nombres.'));
     c1.append(el('p',{class:'note'},'De paso se ve por qué $\\operatorname{sen}\\theta$ y $\\cos\\theta$ nunca se salen de $[-1,1]$ — son coordenadas de un punto que vive sobre la circunferencia — y por qué cambian de signo al cruzar de cuadrante: es la coordenada la que cambia de signo.'));
@@ -71,7 +71,7 @@ registerModule({
     /* ---------- Tarjeta 3: tangente y secante, también Pitágoras (animada) ---------- */
     const c3=el('div',{class:'card'});
     c3.append(el('h3',{},'Por qué $1+\\tan^2\\theta=\\sec^2\\theta$ también es Pitágoras'));
-    c3.append(el('p',{},'Prolongá el radio hasta la recta vertical $x=1$, tangente a la circunferencia. El punto donde la corta tiene altura $\\tan\\theta$, y la distancia del origen hasta ahí es exactamente $\\sec\\theta$.'));
+    c3.append(el('p',{},'Al prolongar el radio hasta la recta vertical $x=1$, tangente a la circunferencia, el punto donde la corta tiene altura $\\tan\\theta$, y la distancia del origen hasta ahí es exactamente $\\sec\\theta$.'));
 
     const leerC3=el('p',{class:'note'});
     const cajaP3=el('div',{class:'plot'}); c3.append(cajaP3);
@@ -113,7 +113,7 @@ registerModule({
     /* ---------- Tarjeta 4: ángulo de referencia (deslizador) ---------- */
     const c4=el('div',{class:'card'});
     c4.append(el('h3',{},'Ángulo de referencia y reducción al primer cuadrante'));
-    c4.append(el('p',{},'Para un $\\theta$ cuyo lado terminal no cae sobre un eje, el ',el('b',{},'ángulo de referencia'),' $\\theta_r$ es el ángulo agudo que ese lado terminal forma con el eje $x$. Movés $\\theta$ y mirás cómo $\\theta_r$ se mide siempre contra el eje horizontal, nunca contra el vertical.'));
+    c4.append(el('p',{},'Para un $\\theta$ cuyo lado terminal no cae sobre un eje, el ',el('b',{},'ángulo de referencia'),' $\\theta_r$ es el ángulo agudo que ese lado terminal forma con el eje $x$. Al mover $\\theta$ se ve que $\\theta_r$ se mide siempre contra el eje horizontal, nunca contra el vertical.'));
 
     let thG=210;
     const leerC4=el('p',{class:'note'});
@@ -179,7 +179,7 @@ registerModule({
 
     c4.append(el('p',{},'Con eso, calcular una función trigonométrica de un ángulo cualquiera son tres pasos: el ángulo de referencia, el signo que le toca según el cuadrante, y el valor conocido de $\\theta_r$.'));
     c4.append(el('div',{class:'formula',html:'$$\\theta_r=\\theta \\quad\\mid\\quad 180^\\circ-\\theta \\quad\\mid\\quad \\theta-180^\\circ \\quad\\mid\\quad 360^\\circ-\\theta$$'}));
-    c4.append(el('p',{class:'note'},'Las cuatro reglas están en ese orden: cuadrantes I, II, III y IV. Si $\\theta$ se pasa de una vuelta (o es negativo), primero se le suman o restan vueltas completas de $360^\\circ$ hasta caer en $[0^\\circ,360^\\circ)$ — mové el deslizador más allá de $360^\\circ$ y vas a ver que el dibujo se repite idéntico.'));
+    c4.append(el('p',{class:'note'},'Las cuatro reglas están en ese orden: cuadrantes I, II, III y IV. Si $\\theta$ se pasa de una vuelta (o es negativo), primero se le suman o restan vueltas completas de $360^\\circ$ hasta caer en $[0^\\circ,360^\\circ)$ — al llevar el deslizador más allá de $360^\\circ$, el dibujo se repite idéntico.'));
     c4.append(el('p',{class:'note'},'El error clásico es medir $\\theta_r$ contra el eje $y$ cuando el punto queda cerca de la vertical. El arco verde del dibujo siempre nace en el eje horizontal: es la definición.'));
     c4.append(el('p',{class:'fuente'},'Fuente: Clase 1, Definición 2.1 «Ángulo de referencia» y sección «Reducción al primer cuadrante» (Geometría 2026-2).'));
     sec.append(c4);
@@ -219,7 +219,7 @@ registerModule({
     c5.append(leerC5);
 
     c5.append(el('p',{},'Los dieciséis puntos grises son los notables de la vuelta completa. Todos son el mismo par de valores $\\tfrac12$, $\\tfrac{\\sqrt2}{2}$, $\\tfrac{\\sqrt3}{2}$ repetido, cambiando de lugar y de signo — eso es la reducción al primer cuadrante vista de golpe.'));
-    c5.append(el('p',{class:'note'},'Regla de bolsillo: $30^\\circ$ tiene el seno chico ($\\tfrac12$) y el coseno grande ($\\tfrac{\\sqrt3}{2}$); en $60^\\circ$ se dan vuelta; en $45^\\circ$ son iguales. Si dudás de cuál va, mirá el dibujo: en $30^\\circ$ el punto está bajito, así que su altura —el seno— tiene que ser la coordenada chica.'));
+    c5.append(el('p',{class:'note'},'Regla de bolsillo: $30^\\circ$ tiene el seno chico ($\\tfrac12$) y el coseno grande ($\\tfrac{\\sqrt3}{2}$); en $60^\\circ$ se invierten; en $45^\\circ$ son iguales. Ante la duda, el dibujo lo resuelve: en $30^\\circ$ el punto está bajo, así que su altura —el seno— tiene que ser la coordenada menor.'));
     c5.append(el('p',{class:'fuente'},'Fuente: Clase 1, «Reducción al primer cuadrante», paso 3 (valores de las funciones trigonométricas de 30°, 45°, 60° y 90°). La tabla de los 16 notables de la vuelta completa es elaboración propia a partir de esos cuatro valores.'));
     sec.append(c5);
   }
