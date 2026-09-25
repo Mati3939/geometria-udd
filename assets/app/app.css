@@ -134,6 +134,31 @@ main{max-width:1150px; margin:0 auto; padding:1rem 1.2rem 4rem;}
 .card details>*:last-child{margin-bottom:0;}
 .controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:1.1rem 0;}
 .controls label{font-size:.85rem; color:var(--ink2);}
+/* Casilla para escribir un valor exacto, al lado de su deslizador. Ancho fijo
+   para que una fila con dos o tres controles no se reacomode al teclear. */
+.controls input.num{
+  width:5.4rem; border:1px solid var(--border); border-radius:8px;
+  background:var(--surface); color:var(--ink); font:inherit; font-size:.85rem;
+  padding:.24rem .45rem; text-align:right;
+}
+.controls .unid{font-size:.85rem; color:var(--muted); margin-left:-.25rem;}
+
+/* Lectura de valores en vivo: una magnitud por celda, en grilla que se acomoda
+   al ancho (varias columnas en escritorio, una sola en el teléfono). En un solo
+   renglón encadenado los números se confunden entre sí. */
+.lectura{
+  display:grid; grid-template-columns:1fr;
+  gap:.1rem 1.4rem; margin:.9rem auto 1.15rem; max-width:520px;
+  font-size:.9rem; color:var(--ink2);
+}
+/* Dos columnas como máximo, y solo si hay ancho. Con auto-fit las cuatro o
+   cinco magnitudes se repartían en una única fila a lo ancho de la tarjeta, que
+   es exactamente el renglón ilegible que esto venía a resolver. */
+@media (min-width:620px){ .lectura{grid-template-columns:1fr 1fr;} }
+.lectura-item{display:flex; justify-content:space-between; gap:.6rem;
+  border-bottom:1px solid var(--border); padding:.2rem 0;}
+.lectura-item .k{color:var(--muted);}
+.lectura-item .v{font-family:ui-monospace,Consolas,monospace; color:var(--ink); white-space:nowrap;}
 .btn{
   border:1px solid var(--border); background:var(--surface); color:var(--ink);
   font:inherit; font-size:.85rem; padding:.32rem .7rem; border-radius:8px; cursor:pointer;

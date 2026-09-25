@@ -1,4 +1,4 @@
-/* Clase 9: vectores en el plano cartesiano — definición, operaciones (suma,
+/* Vectores en el plano: definicion, operaciones (suma,
    resta, producto por escalar) y su interpretación geométrica, y el vector
    entre dos puntos AB = B − A. */
 registerModule({
@@ -35,7 +35,6 @@ registerModule({
     c1.append(el('p',{},'Los cuatro puntos grises son puntos de partida distintos, y en los cuatro la flecha es ',el('b',{},'idéntica'),': mismo largo, misma dirección. Eso es lo que se anota'));
     c1.append(el('div',{class:'formula',html:'$$\\vec v=(v_1,v_2),\\qquad \\mathbb{R}^2=\\{(v_1,v_2)\\mid v_1,v_2\\in\\mathbb{R}\\}$$'}));
     c1.append(el('p',{class:'note'},'Por eso un vector se puede mover «punta con cola» sin que deje de ser el mismo vector: lo único que define a $\\vec v$ son sus dos componentes, no dónde está dibujado.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 9 «Vectores en el plano cartesiano», Definición 2.1 (Geometría 2026-2).'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: el vector entre dos puntos (deslizadores) ---------- */
@@ -76,7 +75,6 @@ registerModule({
     c2.append(el('p',{class:'note'},'Por ejemplo, con $A(1,1)$ y $B(4,3)$: $\\vec{AB}=B-A=(4-1,\\,3-1)=(3,2)$ — al llevar los cuatro deslizadores a esos valores, el dibujo confirma el número.'));
     c2.append(el('div',{class:'formula',html:'$$\\vec{AB}=\\overrightarrow{PQ}=Q-P=(x_2-x_1,\\ y_2-y_1)$$'}));
     c2.append(el('p',{class:'note'},'La magnitud de $\\vec{AB}$ es simplemente la distancia entre $A$ y $B$: $\\|\\vec{AB}\\|=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}$.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 9, Definición 2.2 «Vectores en el plano» y Definición 2.3 «Magnitud» (Geometría 2026-2).'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: suma y resta (animada) ---------- */
@@ -129,7 +127,6 @@ registerModule({
     c3.append(el('p',{},'Restar es sumar el opuesto: $\\vec u-\\vec v=\\vec u+(-\\vec v)$. En el mismo dibujo, $-\\vec v$ sale de la punta de $\\vec u$ apuntando al revés que $\\vec v$, y su propia punta marca $\\vec u-\\vec v$.'));
     c3.append(el('div',{class:'formula',html:'$$\\vec u-\\vec v=\\vec u+(-\\vec v)=(u_1-v_1,\\ u_2-v_2)$$'}));
     c3.append(el('p',{class:'note'},'Que el triángulo y el paralelogramo den el mismo resultado explica de paso por qué la suma es conmutativa: da lo mismo ir primero por $\\vec u$ y después por $\\vec v$ que al revés — los dos caminos terminan en la misma punta del paralelogramo.'));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 9, «Operaciones entre vectores» (suma) y Reflexión «¿Qué representa geométricamente la suma entre dos vectores?» (Geometría 2026-2).'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: producto por un escalar (deslizador) ---------- */
@@ -169,7 +166,6 @@ registerModule({
 
     c4.append(el('div',{class:'formula',html:'$$\\lambda\\vec v=(\\lambda v_1,\\ \\lambda v_2),\\qquad \\|\\lambda\\vec v\\|=|\\lambda|\\,\\|\\vec v\\|$$'}));
     c4.append(el('p',{class:'note'},'Con $\\lambda=-1$ el vector no cambia de largo, solo de sentido: es exactamente el $-\\vec v$ que usamos en la tarjeta anterior para armar la resta. Con $\\lambda=0$ no queda ningún vector — colapsa al vector nulo $\\vec 0$.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 9, «Operaciones entre vectores» (multiplicación por un escalar) y Reflexión «¿Qué características de un vector se pueden modificar al multiplicarlo por un escalar?» (Geometría 2026-2).'));
     sec.append(c4);
   }
 });

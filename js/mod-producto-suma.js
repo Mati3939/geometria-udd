@@ -1,4 +1,4 @@
-/* Clase 4 del curso: fórmulas de producto a suma y de suma a producto. */
+/* Producto a suma y suma a producto. */
 registerModule({
   id:'producto-suma',
   title:'Producto a suma y suma a producto',
@@ -40,19 +40,17 @@ registerModule({
     c1.append(el('p',{},'La curva azul es el producto $\\operatorname{sen}(mx)\\cos(nx)$; la naranja discontinua es la fórmula de producto a suma con $A=mx$ y $B=nx$. Coinciden en cada punto porque son la misma función escrita de dos formas distintas.'));
     c1.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(A)\\cos(B)=\\frac{1}{2}\\big[\\operatorname{sen}(A+B)+\\operatorname{sen}(A-B)\\big]$$'}));
     c1.append(el('p',{class:'note'},'Con m y n enteros, mx y nx dan una vuelta completa m y n veces en $[0,2\\pi]$: al subir n, la modulación —los «bultos» de la envolvente— se vuelve más angosta.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 4 «Fórmulas de producto a suma y suma a producto», Teorema 2.1, fórmula 1 (Geometría 2026-2).'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: las cuatro fórmulas de producto a suma ---------- */
     const c2=el('div',{class:'card'});
     c2.append(el('h3',{},'Las cuatro fórmulas de producto a suma'));
-    c2.append(el('p',{},'Salen de sumar y restar las fórmulas de la suma y la diferencia de ángulos, $\\operatorname{sen}(A\\pm B)$ y $\\cos(A\\pm B)$ (Clase 2), y despejar el término cruzado.'));
+    c2.append(el('p',{},'Salen de sumar y restar las fórmulas de la suma y la diferencia de ángulos, $\\operatorname{sen}(A\\pm B)$ y $\\cos(A\\pm B)$, y despejar el término cruzado.'));
     c2.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(A)\\cos(B)=\\frac{1}{2}\\big[\\operatorname{sen}(A+B)+\\operatorname{sen}(A-B)\\big]$$'}));
     c2.append(el('div',{class:'formula',html:'$$\\cos(A)\\operatorname{sen}(B)=\\frac{1}{2}\\big[\\operatorname{sen}(A+B)-\\operatorname{sen}(A-B)\\big]$$'}));
     c2.append(el('div',{class:'formula',html:'$$\\cos(A)\\cos(B)=\\frac{1}{2}\\big[\\cos(A+B)+\\cos(A-B)\\big]$$'}));
     c2.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(A)\\operatorname{sen}(B)=\\frac{1}{2}\\big[\\cos(A-B)-\\cos(A+B)\\big]$$'}));
     c2.append(el('p',{class:'note'},'Sirven, por ejemplo, para calcular productos como $\\cos(20°)\\cos(40°)\\cos(80°)$ sin pasar por ángulos notables: cada producto se abre en una suma que sí se simplifica.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 4, Teorema 2.1 «Fórmulas de producto a suma» (Geometría 2026-2).'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: el batido (deslizadores de frecuencia) ---------- */
@@ -95,7 +93,6 @@ registerModule({
     c3.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(A)+\\operatorname{sen}(B)=2\\operatorname{sen}\\!\\left(\\frac{A+B}{2}\\right)\\cos\\!\\left(\\frac{A-B}{2}\\right)$$'}));
     c3.append(el('p',{class:'note'},'Con $A=\\omega_1x$ y $B=\\omega_2x$: $\\operatorname{sen}\\!\\big(\\tfrac{\\omega_1+\\omega_2}{2}x\\big)$ es la oscilación rápida —el promedio de las dos frecuencias— y $2\\cos\\!\\big(\\tfrac{\\omega_1-\\omega_2}{2}x\\big)$ es la envolvente lenta: cuanto más parecidas son $\\omega_1$ y $\\omega_2$, más separados quedan sus nodos y más lento se siente el batido.'));
     c3.append(el('p',{class:'note'},'Si $\\omega_1=\\omega_2$ no hay batido: la envolvente queda fija en 2 y la suma es, simplemente, el doble de una onda pura.'));
-    c3.append(el('p',{class:'fuente'},'Fuente: fórmula de suma a producto, Clase 4, Teorema 2.2, fórmula 1 (Geometría 2026-2); la lectura como fenómeno de batido (envolvente) es elaboración propia sobre esa misma fórmula.'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: las cuatro fórmulas de suma a producto ---------- */
@@ -107,7 +104,6 @@ registerModule({
     c4.append(el('div',{class:'formula',html:'$$\\cos(A)+\\cos(B)=2\\cos\\!\\left(\\frac{A+B}{2}\\right)\\cos\\!\\left(\\frac{A-B}{2}\\right)$$'}));
     c4.append(el('div',{class:'formula',html:'$$\\cos(A)-\\cos(B)=-2\\operatorname{sen}\\!\\left(\\frac{A+B}{2}\\right)\\operatorname{sen}\\!\\left(\\frac{A-B}{2}\\right)$$'}));
     c4.append(el('p',{class:'note'},'La última lleva un signo menos que las otras tres no tienen — es el error más común al usarla: $\\cos A-\\cos B$ nunca da $+2\\operatorname{sen}(\\cdot)\\operatorname{sen}(\\cdot)$. La tarjeta siguiente lo aterriza con un número.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 4, Teorema 2.2 «Fórmulas de suma a producto» (Geometría 2026-2).'));
     sec.append(c4);
 
     /* ---------- Tarjeta 5: cos A + cos B, y el signo de cos A − cos B ---------- */
@@ -142,7 +138,6 @@ registerModule({
 
     c5.append(el('p',{},'La curva azul es la suma real; la naranja discontinua es la misma suma calculada con $\\cos(A)+\\cos(B)=2\\cos\\!\\left(\\frac{A+B}{2}\\right)\\cos\\!\\left(\\frac{A-B}{2}\\right)$ — se superponen, igual que con los senos.'));
     c5.append(el('p',{class:'note'},'La fórmula gemela, $\\cos A-\\cos B=-2\\operatorname{sen}\\!\\left(\\frac{A+B}{2}\\right)\\operatorname{sen}\\!\\left(\\frac{A-B}{2}\\right)$, lleva ese signo menos que rompe el patrón de las otras tres. Por ejemplo: $\\cos(70°)-\\cos(10°)=-2\\operatorname{sen}(40°)\\operatorname{sen}(30°)\\approx-0{,}643$ — sin el signo menos, el resultado quedaría con el signo cambiado.'));
-    c5.append(el('p',{class:'fuente'},'Fuente: Clase 4, Teorema 2.2, fórmulas 3 y 4 (Geometría 2026-2).'));
     sec.append(c5);
   }
 });

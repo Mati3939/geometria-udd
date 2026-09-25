@@ -1,4 +1,4 @@
-/* Clase 3 del curso: fórmulas para el ángulo doble y el ángulo medio. */
+/* Angulo doble y angulo medio: seno, coseno y tangente, y el signo de la raiz. */
 registerModule({
   id:'angulo-doble-medio',
   title:'Ángulo doble y ángulo medio',
@@ -52,18 +52,16 @@ registerModule({
 
     c1.append(el('p',{},'El segmento naranja (sen 2x) no es el doble del azul (sen x): son alturas de puntos distintos sobre la misma circunferencia, y crecen y decrecen a ritmos distintos. Lo que sí coincide, siempre, es sen(2x) con $2\\operatorname{sen}(x)\\cos(x)$: mueve el deslizador y compara los dos números de arriba.'));
     c1.append(el('p',{class:'note'},'Cerca de $x=90°$ se ve el caso más claro: sen(x) llega a su máximo (1), pero 2x ya pasó los 180° y sen(2x) va camino a 0 — las dos curvas no tienen por qué ir en la misma dirección.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 3 «Fórmulas para el ángulo doble y medio», Teorema 2.1 (Geometría 2026-2).'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: fórmulas del ángulo doble (sen y tan) ---------- */
     const c2=el('div',{class:'card'});
     c2.append(el('h3',{},'Las fórmulas del ángulo doble'));
-    c2.append(el('p',{},'Duplicar el ángulo es el caso particular de la suma donde los dos sumandos son iguales: en $\\operatorname{sen}(\\alpha+\\beta)$ y $\\cos(\\alpha+\\beta)$ (Clase 2) se reemplaza $\\beta$ por $\\alpha$ y se agrupa. Eso es exactamente lo que se comprobó arriba con el deslizador.'));
+    c2.append(el('p',{},'Duplicar el ángulo es el caso particular de la suma donde los dos sumandos son iguales: en $\\operatorname{sen}(\\alpha+\\beta)$ y $\\cos(\\alpha+\\beta)$ se reemplaza $\\beta$ por $\\alpha$ y se agrupa. Eso es exactamente lo que se comprobó arriba con el deslizador.'));
     c2.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(2\\alpha)=2\\operatorname{sen}(\\alpha)\\cos(\\alpha)$$'}));
     c2.append(el('p',{},'El coseno del ángulo doble tiene tres formas equivalentes — la tarjeta siguiente muestra por qué son la misma fórmula y cuándo conviene cada una. La tangente sale de dividir seno por coseno:'));
     c2.append(el('div',{class:'formula',html:'$$\\tan(2\\alpha)=\\frac{2\\tan(\\alpha)}{1-\\tan^2(\\alpha)}$$'}));
     c2.append(el('p',{class:'note'},'Definida solo donde $\\tan\\alpha$ existe y $1-\\tan^2\\alpha\\neq0$, es decir $\\alpha\\neq\\dfrac{\\pi}{4}+k\\dfrac{\\pi}{2}$, $k\\in\\mathbb{Z}$.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 3, Teorema 2.1 «Fórmulas para ángulo doble» (Geometría 2026-2).'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: las tres caras de cos(2x) (deslizador + gráfico) ---------- */
@@ -102,7 +100,6 @@ registerModule({
     c3.append(el('p',{},'Las tres reescrituras salen de $\\operatorname{sen}^2\\alpha+\\cos^2\\alpha=1$ aplicada sobre $\\cos^2\\alpha-\\operatorname{sen}^2\\alpha$: reemplazando $\\cos^2\\alpha$ o $\\operatorname{sen}^2\\alpha$ se llega a las otras dos. Ninguna es más «correcta» — se elige según el dato disponible.'));
     c3.append(el('div',{class:'formula',html:'$$\\cos(2\\alpha)=\\cos^2\\alpha-\\operatorname{sen}^2\\alpha=1-2\\operatorname{sen}^2\\alpha=2\\cos^2\\alpha-1$$'}));
     c3.append(el('p',{class:'note'},'Si solo se conoce $\\operatorname{sen}\\alpha$, conviene la del medio; si solo se conoce $\\cos\\alpha$, la de la derecha; si se tienen los dos, la de la izquierda es la más directa.'));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 3, Teorema 2.1 «Fórmulas para ángulo doble» (Geometría 2026-2).'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: el signo del ángulo medio (deslizador) ---------- */
@@ -154,7 +151,6 @@ registerModule({
 
     c4.append(el('p',{},'Es fácil razonar «x está en el cuadrante III, así que el seno es negativo» — pero la fórmula habla de $x/2$, no de $x$. Al mover el deslizador hasta un tramo donde el cuadrante de x y el de x/2 no coincidan, se ve con claridad qué segmento manda.'));
     c4.append(el('p',{class:'note'},'Por eso el deslizador llega hasta 720°: como x/2 avanza a la mitad de velocidad que x, mientras x completa dos vueltas completas, x/2 completa exactamente una — y pasa por los cuatro cuadrantes una sola vez.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 3, Teorema 2.2 «Fórmulas para ángulo medio»: «debemos determinar qué signo emplear, según la ubicación del lado terminal del ángulo α/2» (Geometría 2026-2).'));
     sec.append(c4);
 
     /* ---------- Tarjeta 5: fórmulas del ángulo medio ---------- */
@@ -164,7 +160,6 @@ registerModule({
     c5.append(el('div',{class:'formula',html:'$$\\operatorname{sen}\\left(\\frac{\\alpha}{2}\\right)=\\pm\\sqrt{\\frac{1-\\cos\\alpha}{2}}\\qquad \\cos\\left(\\frac{\\alpha}{2}\\right)=\\pm\\sqrt{\\frac{1+\\cos\\alpha}{2}}$$'}));
     c5.append(el('div',{class:'formula',html:'$$\\tan\\left(\\frac{\\alpha}{2}\\right)=\\pm\\sqrt{\\frac{1-\\cos\\alpha}{1+\\cos\\alpha}}$$'}));
     c5.append(el('p',{class:'note'},'Por ejemplo, con $\\alpha=45°$: $\\cos(22{,}5°)=\\sqrt{(1+\\cos 45°)/2}\\approx0{,}924$, con signo + porque $22{,}5°$ cae en el cuadrante I.'));
-    c5.append(el('p',{class:'fuente'},'Fuente: Clase 3, Teorema 2.2 «Fórmulas para ángulo medio» (Geometría 2026-2).'));
     sec.append(c5);
   }
 });

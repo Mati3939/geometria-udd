@@ -1,4 +1,4 @@
-/* Clase 2 del curso: fórmulas para el seno, el coseno y la tangente de la
+/* Formulas para el seno, el coseno y la tangente de la
    suma y la diferencia de dos ángulos.
 
    La idea grande: sen(a+b) NO es sen a + sen b (tarjeta 1, el error). Lo que
@@ -54,7 +54,6 @@ registerModule({
 
     c1.append(el('p',{class:'note'},'Las dos curvas se tocan una sola vez por vuelta, justo en $b=0°$: ahí "sen a + sen 0" y "sen(a+0)" son la misma cosa por definición, no una coincidencia de la suma. En cualquier otro $b$ el hueco entre las dos alturas es real y no se cierra.'));
     c1.append(el('p',{class:'note'},'Lo que sí es correcto sale de un dibujo, no de repartir el seno: las dos tarjetas siguientes muestran de dónde salen los productos $\\operatorname{sen}a\\cos b$ y $\\cos a\\operatorname{sen}b$.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: motivación de la Clase 2 «Fórmulas para la suma y diferencia de ángulos» (Geometría 2026-2); la comparación de curvas es elaboración propia.'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: la construcción del seno (animada + slider de a) ---------- */
@@ -106,7 +105,6 @@ registerModule({
     c2.append(el('p',{class:'note'},'La franja izquierda es literalmente la suma: el tramo azul de abajo mide $\\operatorname{sen}a\\cos b$ y el verde de arriba mide $\\cos a\\operatorname{sen}b$; juntos llegan exactamente a la altura de $P$, que es $\\operatorname{sen}(a+b)$. En la animación $b$ también pasa por negativos — ahí el mismo dibujo da la resta, porque $\\operatorname{sen}(-b)=-\\operatorname{sen}b$ y $\\cos(-b)=\\cos b$.'));
     c2.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(a+b)=\\operatorname{sen}a\\cos b+\\cos a\\operatorname{sen}b \\qquad \\operatorname{sen}(a-b)=\\operatorname{sen}a\\cos b-\\cos a\\operatorname{sen}b$$'}));
     c2.append(el('p',{class:'note'},'Ejemplo: $\\operatorname{sen}(75°)=\\operatorname{sen}(45°+30°)=\\tfrac{\\sqrt6+\\sqrt2}{4}\\approx0{,}966$ — el mismo valor que da una calculadora para $75°$, sin tabla para ese ángulo.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 2 «Fórmulas para la suma y diferencia de ángulos», Teorema 2.1 (Geometría 2026-2); la construcción geométrica con $Q$ y $P$ es elaboración propia sobre el mismo círculo unitario.'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: la construcción del coseno (animada + slider de a) ---------- */
@@ -155,7 +153,6 @@ registerModule({
     c3.append(el('p',{class:'note'},'Cuando $b$ crece desde $0°$, $Q$ y $P$ se acercan y el tramo verde se acorta cada vez más — por eso resta y no suma. La franja de abajo termina exactamente en la coordenada horizontal de $P$, que es $\\cos(a+b)$.'));
     c3.append(el('div',{class:'formula',html:'$$\\cos(a+b)=\\cos a\\cos b-\\operatorname{sen}a\\operatorname{sen}b \\qquad \\cos(a-b)=\\cos a\\cos b+\\operatorname{sen}a\\operatorname{sen}b$$'}));
     c3.append(el('p',{class:'note'},'La diferencia cambia el signo del segundo término porque $\\operatorname{sen}(-b)=-\\operatorname{sen}b$: el retroceso se vuelve avance, y el "menos" del teorema pasa a "más".'));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 2, Teorema 2.2 (Geometría 2026-2); la construcción geométrica es elaboración propia sobre el mismo círculo unitario de la tarjeta anterior.'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: comprobación numérica con dos deslizadores ---------- */
@@ -206,8 +203,7 @@ registerModule({
     c4.append(leerSenC4); c4.append(leerCosC4); c4.append(leerTanC4);
     actualizarC4();
 
-    c4.append(el('p',{class:'note'},'Cerca de $a+b=\\pm90°$ la tangente se dispara y el deslizador puede mostrar "indef." de un lado nada más por redondeo — es el mismo aviso de la Clase 1, no un error de la fórmula.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 2, Teoremas 2.1, 2.2 y 2.3 (Geometría 2026-2).'));
+    c4.append(el('p',{class:'note'},'Cerca de $a+b=\\pm90°$ la tangente se dispara y el deslizador puede mostrar "indef." de un lado nada más por redondeo — es redondeo, no un error de la fórmula.'));
     sec.append(c4);
 
     /* ---------- Tarjeta 5: la tangente, dividiendo seno por coseno ---------- */
@@ -255,7 +251,6 @@ registerModule({
     c5.append(el('p',{class:'note'},'Los tres puntos son donde el rayo de cada ángulo cruza la recta $x=1$: su altura ahí es, por definición, la tangente. El rayo violeta (la suma) siempre cae donde predice la fórmula, incluso con $b$ negativo: basta mover $a$ y $b$ para comprobarlo.'));
     c5.append(el('div',{class:'formula',html:'$$\\tan(a+b)=\\frac{\\tan a+\\tan b}{1-\\tan a\\tan b} \\qquad \\tan(a-b)=\\frac{\\tan a-\\tan b}{1+\\tan a\\tan b}$$'}));
     c5.append(el('p',{class:'note'},'La diferencia solo cambia el signo del término $\\tan a\\tan b$, arriba y abajo: sale de reemplazar $b$ por $-b$ y usar que $\\tan(-b)=-\\tan b$.'));
-    c5.append(el('p',{class:'fuente'},'Fuente: Clase 2, Teorema 2.3 «Fórmulas para la tangente de la suma y diferencia de ángulos» (Geometría 2026-2); la lectura geométrica sobre la recta $x=1$ es elaboración propia, en la línea de la tangente de la Clase 1.'));
     sec.append(c5);
   }
 });

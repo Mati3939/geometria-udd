@@ -1,7 +1,6 @@
-/* Clase 6: ecuaciones y problemas con funciones inversas — definición, dominio y
-   recorrido de arcsin, arccos y arctan; ecuaciones con inversas; e identidades
-   con inversas. Fuente: Clase 6 y Guía 6 «Ecuaciones y problemas con funciones
-   trigonométricas inversas» (Geometría 2026-2, Unidad I). */
+/* Funciones trigonometricas inversas: definicion, dominio y
+   recorrido de arcsen, arccos y arctan; ecuaciones con inversas; e identidades
+   con inversas. */
 registerModule({
   id:'funciones-inversas',
   title:'Funciones trigonométricas inversas',
@@ -37,20 +36,19 @@ registerModule({
       P.parametrica(s=>[-1.6+3.2*s,-1.6+3.2*s],0,1,{color:'--grid',grosor:1.2,guiones:true});
       P.curva(x=>(x>=-1&&x<=1)?Math.asin(x):NaN,{color:'--s1',grosor:2.6});
       P.punto(y0,x0,{color:'--s7',r:5});
-      leerC1.textContent='x = '+x0.toFixed(2)+' · (sen x, x) = ('+y0.toFixed(2)+', '+x0.toFixed(2)+') · arcsin('+y0.toFixed(2)+') = '+x0.toFixed(2);
+      leerC1.textContent='x = '+x0.toFixed(2)+' · (sen x, x) = ('+y0.toFixed(2)+', '+x0.toFixed(2)+') · arcsen('+y0.toFixed(2)+') = '+x0.toFixed(2);
     },{duracion:6});
     c1.append(leerC1);
 
     c1.append(el('div',{class:'formula',html:'$$y=\\operatorname{sen}x,\\quad x\\in\\left[-\\tfrac{\\pi}{2},\\tfrac{\\pi}{2}\\right]$$'}));
-    c1.append(el('div',{class:'formula',html:'$$\\Longrightarrow\\quad x=\\arcsin y,\\quad y\\in[-1,1]$$'}));
-    c1.append(el('p',{class:'note'},'Dominio de $\\arcsin$: $[-1,1]$ (todo lo que el seno recortado alcanza a producir). Recorrido de $\\arcsin$: $[-\\pi/2,\\pi/2]$ (el mismo tramo que se recortó). El punto violeta de arriba y el de abajo son el mismo dato leído en los dos sentidos: cada $x$ del tramo recortado corresponde a un único punto de la curva de $\\arcsin$, y viceversa.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 6, «Definición y resolución» (Geometría 2026-2).'));
+    c1.append(el('div',{class:'formula',html:'$$\\Longrightarrow\\quad x=\\operatorname{arcsen} y,\\quad y\\in[-1,1]$$'}));
+    c1.append(el('p',{class:'note'},'Dominio de $\\operatorname{arcsen}$: $[-1,1]$ (todo lo que el seno recortado alcanza a producir). Recorrido de $\\operatorname{arcsen}$: $[-\\pi/2,\\pi/2]$ (el mismo tramo que se recortó). El punto violeta de arriba y el de abajo son el mismo dato leído en los dos sentidos: cada $x$ del tramo recortado corresponde a un único punto de la curva de $\\operatorname{arcsen}$, y viceversa.'));
     sec.append(c1);
 
-    /* ---------- Tarjeta 2: el error clásico, x contra arcsin(sen x) ---------- */
+    /* ---------- Tarjeta 2: el error clásico, x contra arcsen(sen x) ---------- */
     const c2=el('div',{class:'card'});
-    c2.append(el('h3',{},'$\\arcsin(\\operatorname{sen}x)$ no siempre es $x$'));
-    c2.append(el('p',{},'El recorte de la tarjeta anterior tiene una consecuencia que engaña seguido: componer $\\arcsin$ con $\\operatorname{sen}$ solo deshace la operación mientras $x$ se quede dentro de $[-\\pi/2,\\pi/2]$. Fuera de ese tramo, $\\arcsin(\\operatorname{sen}x)$ devuelve otro valor. El deslizador compara $x$ con $\\arcsin(\\operatorname{sen}x)$ en cada punto.'));
+    c2.append(el('h3',{},'$\\operatorname{arcsen}(\\operatorname{sen}x)$ no siempre es $x$'));
+    c2.append(el('p',{},'El recorte de la tarjeta anterior tiene una consecuencia que engaña seguido: componer $\\operatorname{arcsen}$ con $\\operatorname{sen}$ solo deshace la operación mientras $x$ se quede dentro de $[-\\pi/2,\\pi/2]$. Fuera de ese tramo, $\\operatorname{arcsen}(\\operatorname{sen}x)$ devuelve otro valor. El deslizador compara $x$ con $\\operatorname{arcsen}(\\operatorname{sen}x)$ en cada punto.'));
 
     let xC2=1.0;
     const leerC2a=el('p',{});
@@ -61,9 +59,9 @@ registerModule({
     function arcsinSen(x){ return Math.asin(Math.sin(x)); }
     P2.dibujar(P=>{
       P.ejes();
-      /* UNA sola franja, y es el recorrido de arcsin: [−π/2, π/2]. Ahí y solo
+      /* UNA sola franja, y es el recorrido de arcsen: [−π/2, π/2]. Ahí y solo
          ahí la curva azul se apoya en la diagonal. Las repeticiones cada 2π
-         tienen el mismo seno, pero arcsin devuelve siempre el representante de
+         tienen el mismo seno, pero arcsen devuelve siempre el representante de
          esta franja, así que ahí el diente de sierra NO toca la diagonal. */
       P.region(()=>2.1,()=>-2.1,-Math.PI/2,Math.PI/2,{color:'--s2',alpha:0.12});
       P.curva(x=>x,{color:'--grid',grosor:1.4,guiones:true});
@@ -80,17 +78,16 @@ registerModule({
     function actualizarC2(){
       const y0=arcsinSen(xC2);
       const coincide=Math.abs(y0-xC2)<1e-9;
-      leerC2a.innerHTML='x = '+xC2.toFixed(2)+' · arcsin(sen x) = '+y0.toFixed(2)
+      leerC2a.innerHTML='x = '+xC2.toFixed(2)+' · arcsen(sen x) = '+y0.toFixed(2)
         +(coincide?' · <b>coinciden</b>':' · <b>no coinciden</b>');
       leerC2b.textContent=coincide
-        ? 'x está dentro de la franja verde: ahí, y solo ahí, arcsin deshace al seno.'
-        : 'x quedó fuera de [−π/2, π/2]: arcsin(sen x) devuelve el ángulo de la franja verde que tiene el mismo seno que x, no x.';
+        ? 'x está dentro de la franja verde: ahí, y solo ahí, arcsen deshace al seno.'
+        : 'x quedó fuera de [−π/2, π/2]: arcsen(sen x) devuelve el ángulo de la franja verde que tiene el mismo seno que x, no x.';
     }
     actualizarC2();
 
-    c2.append(el('p',{},'La curva azul es $\\arcsin(\\operatorname{sen}x)$: un diente de sierra que se apoya en la diagonal $y=x$ únicamente dentro de la franja verde, y que fuera de ella sube y baja entre $-\\tfrac\\pi2$ y $\\tfrac\\pi2$ sin volver a tocarla nunca.'));
-    c2.append(el('p',{class:'note'},'Regla práctica: $\\arcsin(\\operatorname{sen}x)=x$ solo si $x\\in\\left[-\\tfrac\\pi2,\\ \\tfrac\\pi2\\right]$, y en ningún otro caso. Fuera de ese tramo el resultado es el único ángulo de $\\left[-\\tfrac\\pi2,\\tfrac\\pi2\\right]$ que comparte seno con $x$ — el punto gemelo de la Clase 5. Conviene desconfiar del atajo de «sumar o restar vueltas»: para $x$ entre $-\\tfrac\\pi2+2k\\pi$ y $\\tfrac\\pi2+2k\\pi$ el resultado es $x-2k\\pi$, así que $\\arcsin(\\operatorname{sen}2\\pi)=0$ y no $2\\pi$.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: elaboración propia sobre la definición de $\\arcsin$ y su recorrido (Clase 6, Geometría 2026-2), para ilustrar la restricción de dominio.'));
+    c2.append(el('p',{},'La curva azul es $\\operatorname{arcsen}(\\operatorname{sen}x)$: un diente de sierra que se apoya en la diagonal $y=x$ únicamente dentro de la franja verde, y que fuera de ella sube y baja entre $-\\tfrac\\pi2$ y $\\tfrac\\pi2$ sin volver a tocarla nunca.'));
+    c2.append(el('p',{class:'note'},'Regla práctica: $\\operatorname{arcsen}(\\operatorname{sen}x)=x$ solo si $x\\in\\left[-\\tfrac\\pi2,\\ \\tfrac\\pi2\\right]$, y en ningún otro caso. Fuera de ese tramo el resultado es el único ángulo de $\\left[-\\tfrac\\pi2,\\tfrac\\pi2\\right]$ que comparte seno con $x$ — su punto gemelo en esa franja. Conviene desconfiar del atajo de «sumar o restar vueltas»: para $x$ entre $-\\tfrac\\pi2+2k\\pi$ y $\\tfrac\\pi2+2k\\pi$ el resultado es $x-2k\\pi$, así que $\\operatorname{arcsen}(\\operatorname{sen}2\\pi)=0$ y no $2\\pi$.'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: dominio y recorrido de arccos y arctan ---------- */
@@ -116,13 +113,12 @@ registerModule({
     c3.append(el('div',{class:'formula',html:'$$\\arccos:[-1,1]\\to[0,\\pi]$$'}));
     c3.append(el('div',{class:'formula',html:'$$\\arctan:\\mathbb{R}\\to\\left(-\\tfrac{\\pi}{2},\\tfrac{\\pi}{2}\\right)$$'}));
     c3.append(el('p',{class:'note'},'$\\arccos$ recorta el coseno a $[0,\\pi]$, donde es monótono decreciente y sigue tocando todo $[-1,1]$: por eso su curva (verde) es tan angosta, ya que su dominio es apenas $[-1,1]$. $\\arctan$ recorta la tangente a $(-\\pi/2,\\pi/2)$: como ese tramo ya cubre todo $\\mathbb{R}$ sin repetirse, $\\arctan$ queda definida para cualquier real, pero nunca alcanza $\\pm\\pi/2$ — son asíntotas, no valores del recorrido.'));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 6, «Definición y resolución» (Geometría 2026-2).'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: ecuaciones con funciones inversas ---------- */
     const c4=el('div',{class:'card'});
     c4.append(el('h3',{},'Ecuaciones con funciones inversas'));
-    c4.append(el('p',{},'Para resolverlas se aísla la función inversa y se aplica su definición: si $\\arccos(y)=\\alpha$, entonces $y=\\cos\\alpha$. Como $\\arccos$ ya es una función (biyectiva sobre su recorrido), la recta horizontal la corta ',el('b',{},'a lo sumo una vez'),' — nada que ver con las infinitas soluciones de la Clase 5.'));
+    c4.append(el('p',{},'Para resolverlas se aísla la función inversa y se aplica su definición: si $\\arccos(y)=\\alpha$, entonces $y=\\cos\\alpha$. Como $\\arccos$ ya es una función (biyectiva sobre su recorrido), la recta horizontal la corta ',el('b',{},'a lo sumo una vez'),', a diferencia de lo que ocurre con las funciones trigonométricas directas, que toman cada valor infinitas veces.'));
 
     let alturaC4=0.9;
     const leerC4=el('p',{class:'note'});
@@ -149,8 +145,7 @@ registerModule({
 
     c4.append(el('p',{},'Ejemplo verificado: para resolver $\\arccos(2x+\\sqrt2)=\\pi/4$ se aplica la definición y queda $2x+\\sqrt2=\\cos(\\pi/4)=\\tfrac{\\sqrt2}{2}$, de donde:'));
     c4.append(el('div',{class:'formula',html:'$$x=\\frac{\\frac{\\sqrt2}{2}-\\sqrt2}{2}=-\\frac{\\sqrt2}{4}$$'}));
-    c4.append(el('p',{class:'note'},'Al final conviene validar que el argumento quede dentro de $[-1,1]$ (dominio de $\\arccos$): $2\\left(-\\tfrac{\\sqrt2}{4}\\right)+\\sqrt2=\\tfrac{\\sqrt2}{2}\\approx 0{,}71$, que sí queda adentro. Si el argumento hubiera quedado fuera, esa solución no serviría — es la restricción de dominio de la Clase 5, ahora aplicada al argumento de la inversa.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 6, «Definición y resolución» y «Ecuaciones trigonométricas con funciones inversas»; ejemplo numérico de la Guía 6, ejercicio 1 (Geometría 2026-2).'));
+    c4.append(el('p',{class:'note'},'Al final conviene validar que el argumento quede dentro de $[-1,1]$ (dominio de $\\arccos$): $2\\left(-\\tfrac{\\sqrt2}{4}\\right)+\\sqrt2=\\tfrac{\\sqrt2}{2}\\approx 0{,}71$, que sí queda adentro. Si el argumento hubiera quedado fuera, esa solución no serviría — es la restricción de dominio de la inversa, aplicada al argumento.'));
     sec.append(c4);
 
     /* ---------- Tarjeta 5: identidades con inversas — el triángulo ---------- */
@@ -191,7 +186,6 @@ registerModule({
 
     c5.append(el('div',{class:'formula',html:'$$\\arccos x+\\arctan\\frac{x}{\\sqrt{1-x^2}}=\\frac{\\pi}{2}$$'}));
     c5.append(el('p',{class:'note'},'Los dos ángulos agudos de un triángulo rectángulo suman $\\pi/2$: no hace falta más que eso. El ángulo en el origen es $\\arccos x$ por construcción (cateto adyacente $x$, hipotenusa $1$); el de arriba es $\\arctan\\frac{x}{\\sqrt{1-x^2}}$ porque ahí el cateto opuesto al ángulo es $x$ y el adyacente es $\\sqrt{1-x^2}$. El contador de arriba confirma que la suma da $\\pi/2$ para cualquier $x$ del deslizador.'));
-    c5.append(el('p',{class:'fuente'},'Fuente: Clase 6, «Identidades con funciones trigonométricas inversas» (Geometría 2026-2); la lectura geométrica vía triángulo rectángulo es elaboración propia sobre esa misma identidad.'));
     sec.append(c5);
   }
 });

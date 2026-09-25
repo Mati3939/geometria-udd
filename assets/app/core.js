@@ -286,6 +286,66 @@ function renderMath(nodo){
 }
 
 /* helpers UI */
+
+/* Deslizador + casilla para escribir el valor exacto.
+   Un deslizador sirve para explorar, pero no para llegar a un valor concreto:
+   con 1080 pasos entre -360 y 720, pedirle exactamente 210° es imposible. Los
+   dos controles quedan sincronizados en las dos direcciones.
+   Devuelve {valor, fijar(v)}. */
+function controlValor(mount,op){
+  op=Object.assign({label:'θ',min:-360,max:720,paso:1,valor:0,unidad:'°',onChange:()=>{}},op||{});
+  let v=op.valor;
+  const dentro=x=>isFinite(x)&&x>=op.min&&x<=op.max;
+  const rango=el('input',{type:'range',min:String(op.min),max:String(op.max),
+    step:String(op.paso),value:String(v)});
+  const caja=el('input',{type:'number',class:'num',min:String(op.min),max:String(op.max),
+    step:String(op.paso),value:String(v)});
+  function aplicar(nv,origen){
+    v=nv;
+    if(origen!=='rango')rango.value=String(v);
+    if(origen!=='caja')caja.value=String(v);
+    op.onChange(v);
+  }
+  rango.addEventListener('input',e=>aplicar(parseFloat(e.target.value),'rango'));
+  /* Mientras se escribe solo se acepta lo que ya es válido: si se clampeara en
+     cada tecla, al empezar a teclear «-45» el «-» suelto saltaría al mínimo y
+     el cursor pelearía con el usuario. Al salir de la casilla (change) sí se
+     corrige lo que quedó fuera de rango o en blanco. */
+  caja.addEventListener('input',e=>{
+    const nv=parseFloat(e.target.value);
+    if(dentro(nv))aplicar(nv,'caja');
+  });
+  caja.addEventListener('change',e=>{
+    let nv=parseFloat(e.target.value);
+    if(!isFinite(nv))nv=v;
+    aplicar(Math.min(op.max,Math.max(op.min,nv)));
+  });
+  mount.append(el('div',{class:'controls'},
+    el('label',{},op.label+':'),rango,caja,
+    op.unidad?el('span',{class:'unid'},op.unidad):null));
+  return {get valor(){return v;},fijar(nv){aplicar(Math.min(op.max,Math.max(op.min,nv)));}};
+}
+
+/* Lectura de valores en vivo, UNA MAGNITUD POR CELDA.
+   Encadenadas en un solo renglón («θ = 29° · cos θ = 0,877 · sen θ = 0,481 ·
+   cos²θ + sen²θ = 1,000») no se distingue dónde termina un número y empieza el
+   siguiente. En grilla, cada magnitud tiene su nombre y su valor alineados.
+   Uso: const L=lectura(card); L.set([['θ','29°'],['cos θ','0,877']]); */
+function lectura(mount){
+  const caja=el('div',{class:'lectura'});
+  mount.append(caja);
+  return {
+    nodo:caja,
+    set(pares){
+      caja.textContent='';
+      for(const [k,v] of pares){
+        caja.append(el('div',{class:'lectura-item'},
+          el('span',{class:'k'},k),el('span',{class:'v'},String(v))));
+      }
+    }
+  };
+}
+
 function codeBox(mount){const c=el('pre',{class:'code'});mount.append(c);return c;}
 function btnGroup(mount,items,onpick,activeFirst=true){
   /* items: [{label,value}] — botones excluyentes; devuelve los botones */

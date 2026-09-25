@@ -1,4 +1,4 @@
-/* Clase 10: vectores unitarios y canónicos, componentes cartesianas de un
+/* Componentes cartesianas y producto punto: unitarios y canonicos, componentes de un
    vector, módulo, y el producto escalar (o producto punto) en sus dos formas
    equivalentes, el ángulo entre vectores y la perpendicularidad. */
 registerModule({
@@ -38,7 +38,6 @@ registerModule({
     c1.append(el('p',{},'Las dos componentes son las proyecciones de $\\vec A$ sobre cada eje, y con un poco de trigonometría se escriben en términos de su módulo y su dirección $\\theta$:'));
     c1.append(el('div',{class:'formula',html:'$$\\vec A=A_x\\hat\\imath+A_y\\hat\\jmath,\\qquad (A_x,A_y)=(\\|\\vec A\\|\\cos\\theta,\\ \\|\\vec A\\|\\operatorname{sen}\\theta)$$'}));
     c1.append(el('p',{class:'note'},'Es la misma idea del círculo unitario de la Unidad I, solo que ahora el radio no tiene que ser 1: el deslizador cambia $\\|\\vec A\\|$ y el segmento azul y el verde —las dos componentes— se estiran o se achican junto con él.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 10, Definición 2.2 «Vectores canónicos» y Definición 2.3 «Componentes cartesianas de un vector» (Geometría 2026-2).'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: el vector unitario (animada + deslizador) ---------- */
@@ -70,7 +69,6 @@ registerModule({
 
     c2.append(el('div',{class:'formula',html:'$$\\hat v=\\dfrac{\\vec v}{\\|\\vec v\\|},\\qquad \\|\\hat v\\|=1$$'}));
     c2.append(el('p',{class:'note'},'Mientras $\\vec v$ crece y se achica, $\\hat v$ queda clavado sobre la circunferencia de radio $1$: el deslizador cambia la dirección de los dos a la vez, porque $\\hat v$ solo copia hacia dónde apunta $\\vec v$, nunca cuánto mide.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 10, Definición 2.1 «Vectores unitarios» (Geometría 2026-2).'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: el producto punto y la proyección (animada) ---------- */
@@ -118,7 +116,6 @@ registerModule({
     c3.append(el('div',{class:'formula',html:'$$\\vec u\\cdot\\vec v=u_1v_1+u_2v_2=\\|\\vec u\\|\\,\\|\\vec v\\|\\cos\\theta$$'}));
     c3.append(el('p',{class:'note'},'Las dos lecturas de arriba coinciden en todo momento porque son el mismo número calculado de dos maneras distintas. Con $\\vec u=(4,3)$ y $\\vec v=(0,5)$ —el instante en que $\\vec v$ apunta derecho hacia arriba, con los deslizadores en su posición inicial— queda $\\vec u\\cdot\\vec v=4\\cdot0+3\\cdot5=15$ y $\\|\\vec u\\|\\|\\vec v\\|\\cos\\theta=5\\cdot5\\cdot0{,}6=15$, porque el ángulo entre ambos mide $53{,}13^\\circ$.'));
     c3.append(el('p',{class:'note'},'El segmento de la proyección cambia de color con el signo del producto punto: apunta hacia adelante en $\\vec u$ cuando el ángulo es agudo, se reduce a un punto cuando son perpendiculares, y apunta hacia atrás cuando el ángulo es obtuso.'));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 10, Definición 2.4 «Producto escalar o producto punto» e interpretación geométrica del signo (Geometría 2026-2).'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: ángulo entre vectores y perpendicularidad (deslizadores) ---------- */
@@ -171,7 +168,6 @@ registerModule({
     c4.append(el('p',{},'Un caso particular de esa fórmula es el más usado de todos: cuando $\\theta=90^\\circ$, el coseno es cero, así que el producto punto también lo es. Y al revés: si el producto punto da cero, los vectores son perpendiculares.'));
     c4.append(el('div',{class:'formula',html:'$$\\vec u\\cdot\\vec v=0 \\iff \\vec u\\perp\\vec v$$'}));
     c4.append(el('p',{class:'note'},'Con $\\vec u=(4,3)$, la posición inicial de $\\vec v$ es $(3,-4)$: $\\vec u\\cdot\\vec v=4\\cdot3+3\\cdot(-4)=12-12=0$, así que arrancan perpendiculares y aparece la marca de ángulo recto.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 10, Definición 2.4 «Producto escalar o producto punto», interpretación geométrica del signo y condición de perpendicularidad (Geometría 2026-2).'));
     sec.append(c4);
   }
 });

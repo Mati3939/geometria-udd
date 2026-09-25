@@ -1,7 +1,6 @@
-/* Clase 5: ecuaciones trigonométricas — definición y resolución, ecuaciones
+/* Ecuaciones trigonometricas: familias de soluciones,
    elementales con su solución general, y ecuaciones factorizables (incluido el
-   cambio de variable). Fuente: Clase 5 y Guía 5 «Ecuaciones trigonométricas»
-   (Geometría 2026-2, Unidad I). */
+   cambio de variable). */
 registerModule({
   id:'ecuaciones-trigonometricas',
   title:'Ecuaciones trigonométricas',
@@ -39,11 +38,10 @@ registerModule({
     },{duracion:8});
     c1.append(leerC1);
 
-    c1.append(el('p',{},'Cuando $|a|\\le 1$ aparecen ',el('b',{},'dos'),' familias de cortes, una por cada vuelta: una nace en $\\arcsin a$ y avanza de a $2\\pi$ (puntos verdes), la otra nace en $\\pi-\\arcsin a$ y avanza también de a $2\\pi$ (puntos violeta). Cuando $|a|>1$ la recta queda por completo arriba o por completo abajo de la curva: no hay ningún corte, y la ecuación no tiene solución.'));
-    c1.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(x)=a,\\ |a|\\le 1 \\;\\Longrightarrow\\; x=k\\pi+(-1)^k\\arcsin a,\\ k\\in\\mathbb{Z}$$'}));
-    c1.append(el('p',{class:'note'},'Para $k$ par, $(-1)^k\\arcsin a=\\arcsin a$: es la familia verde. Para $k$ impar, $k\\pi+(-1)^k\\arcsin a$ se reacomoda como $\\pi-\\arcsin a$ más vueltas de $2\\pi$: es la familia violeta. Una sola fórmula guarda las dos.'));
-    c1.append(el('p',{class:'note'},'Ejemplo: $2\\operatorname{sen}(x)+1=0$ da $\\operatorname{sen}x=-\\tfrac12$, y con $\\arcsin(-\\tfrac12)=-\\pi/6$ las dos familias caen en $x=\\tfrac{7\\pi}{6}+2k\\pi$ y $x=\\tfrac{11\\pi}{6}+2k\\pi$.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 5, «Definición y resolución» y «Ecuaciones trigonométricas elementales» (Geometría 2026-2).'));
+    c1.append(el('p',{},'Cuando $|a|\\le 1$ aparecen ',el('b',{},'dos'),' familias de cortes, una por cada vuelta: una nace en $\\operatorname{arcsen} a$ y avanza de a $2\\pi$ (puntos verdes), la otra nace en $\\pi-\\operatorname{arcsen} a$ y avanza también de a $2\\pi$ (puntos violeta). Cuando $|a|>1$ la recta queda por completo arriba o por completo abajo de la curva: no hay ningún corte, y la ecuación no tiene solución.'));
+    c1.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(x)=a,\\ |a|\\le 1 \\;\\Longrightarrow\\; x=\\operatorname{arcsen} a+2k\\pi \\quad\\text{ó}\\quad x=\\pi-\\operatorname{arcsen} a+2k\\pi,\\qquad k\\in\\mathbb{Z}$$'}));
+    c1.append(el('p',{class:'note'},'Las dos familias hacen falta: quedarse solo con $x=\\operatorname{arcsen} a+2k\\pi$ deja fuera la mitad de las soluciones, que son justamente los puntos violeta del dibujo. $\\operatorname{arcsen} a$ entrega un único ángulo —el de $\\left[-\\tfrac\\pi2,\\tfrac\\pi2\\right]$—, y la simetría de la circunferencia respecto del eje $y$ aporta el segundo.'));
+    c1.append(el('p',{class:'note'},'Ejemplo: $2\\operatorname{sen}(x)+1=0$ da $\\operatorname{sen}x=-\\tfrac12$, y con $\\operatorname{arcsen}(-\\tfrac12)=-\\pi/6$ las dos familias caen en $x=\\tfrac{7\\pi}{6}+2k\\pi$ y $x=\\tfrac{11\\pi}{6}+2k\\pi$.'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: por qué dos familias — el círculo unitario ---------- */
@@ -91,7 +89,6 @@ registerModule({
     c2.append(el('div',{class:'formula',html:'$$\\cos(x)=a,\\ |a|\\le 1 \\;\\Longrightarrow\\; x=2k\\pi\\pm\\arccos a,\\ k\\in\\mathbb{Z}$$'}));
     c2.append(el('div',{class:'formula',html:'$$\\tan(x)=b \\;\\Longrightarrow\\; x=k\\pi+\\arctan b,\\ k\\in\\mathbb{Z}$$'}));
     c2.append(el('p',{class:'note'},'La tangente tiene ',el('b',{},'una sola'),' familia porque su período es $\\pi$, no $2\\pi$: en el círculo, los ángulos $\\theta$ y $\\theta+\\pi$ son puntos opuestos, y un punto y su opuesto dan la misma razón $\\operatorname{sen}/\\cos$.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 5, «Ecuaciones trigonométricas elementales» (Geometría 2026-2); la lectura geométrica sobre el círculo unitario retoma la Clase 1.'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: el cambio de variable ---------- */
@@ -122,7 +119,6 @@ registerModule({
     c3.append(el('div',{class:'formula',html:'$$\\cos x=1 \\;\\Longrightarrow\\; x=2k\\pi$$'}));
     c3.append(el('div',{class:'formula',html:'$$\\cos x=\\tfrac12 \\;\\Longrightarrow\\; x=\\pm\\frac{\\pi}{3}+2k\\pi,\\quad k\\in\\mathbb{Z}$$'}));
     c3.append(el('p',{class:'note'},'El cambio de variable no resuelve nada por sí solo: solo hace visible que, debajo del disfraz trigonométrico, hay un polinomio común y conocido. Con $t=\\operatorname{sen}x$, $v=\\tan x$, etc. el mismo recurso sirve para otras formas.'));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 5, «Ecuaciones trigonométricas factorizables», sección «Polinomiales con cambio de variable», ejemplo 2.2 (Geometría 2026-2).'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: la solución es la unión de los ceros ---------- */
@@ -158,7 +154,6 @@ registerModule({
     c4.append(el('div',{class:'formula',html:'$$2\\operatorname{sen}x-1=0 \\;\\Longrightarrow\\; x=\\frac{\\pi}{6}+2k\\pi\\ \\text{ó}\\ x=\\frac{5\\pi}{6}+2k\\pi$$'}));
     c4.append(el('div',{class:'formula',html:'$$\\cos x=0 \\;\\Longrightarrow\\; x=\\frac{\\pi}{2}+k\\pi,\\quad k\\in\\mathbb{Z}$$'}));
     c4.append(el('p',{class:'note'},'Esto vale para cualquier ecuación factorizable, venga ya factorizada o llegue ahí después de un cambio de variable: se identifica cada factor, se resuelve su ecuación elemental por separado, y se unen los resultados.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 5, «Ecuaciones trigonométricas factorizables» (Geometría 2026-2); el ejemplo $(2\\operatorname{sen}x-1)\\cos x=0$ es elaboración propia para ilustrar la unión de ceros.'));
     sec.append(c4);
   }
 });

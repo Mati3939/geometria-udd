@@ -1,4 +1,4 @@
-/* Clase 12 del curso: relaciones entre rectas — las cinco formas de escribir
+/* Relaciones entre rectas: equivalencia entre las formas de
    una misma recta y la perpendicularidad entre su director y su normal, la
    distancia de un punto a una recta, la posición relativa entre dos rectas
    (secantes, paralelas, coincidentes) y el ángulo entre rectas. Las cuentas
@@ -71,7 +71,6 @@ registerModule({
     c1.append(el('div',{class:'formula',html:'$$(x,y)=(1,2)+t(2,3) \\qquad \\begin{cases}x=1+2t\\\\y=2+3t\\end{cases}$$'}));
     c1.append(el('div',{class:'formula',html:'$$\\dfrac{x-1}{2}=\\dfrac{y-2}{3} \\qquad y=1{,}5x+0{,}5 \\qquad 3x-2y+1=0$$'}));
     c1.append(el('p',{class:'note'},'El vector normal $(A,B)=(3,-2)$ de la forma general sale de girar el director $(a,b)=(2,3)$ en $90°$: la pareja $(-b,a)$ — o su opuesta — siempre cumple $aA+bB=0$, y por eso queda perpendicular al director.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 12, sección «Otras formas de una recta» y tabla «Resumen» (Geometría 2026-2); la relación $(-b,a)$ entre director y normal es elaboración propia sobre esas mismas definiciones.'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: distancia de un punto a una recta ---------- */
@@ -114,7 +113,6 @@ registerModule({
     c2.append(el('p',{class:'note'},'Cuando $Q$ coincide con el pie de la perpendicular, el segmento verde y el segmento naranjo miden lo mismo; en cualquier otra posición, el segmento naranjo es más largo. Ese es el motivo por el que la distancia de un punto a una recta se mide siempre en perpendicular.'));
     c2.append(el('div',{class:'formula',html:'$$d(P_1,r)=\\dfrac{\\lvert(x_1-x_0)b-(y_1-y_0)a\\rvert}{\\sqrt{a^2+b^2}}$$'}));
     c2.append(el('p',{class:'note'},'Con $P_0=(3,-2)$, $\\vec v=(3,1)$ y $P_1=(0,0)$ la fórmula da $d=9\\sqrt{10}/10\\approx2{,}85$.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 12, sección «Distancia de un punto a una recta» (Geometría 2026-2).'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: posición relativa entre rectas ---------- */
@@ -161,7 +159,6 @@ registerModule({
 
     c3.append(el('p',{class:'note'},'Las rectas son paralelas cuando $\\vec v=k\\vec u$ para algún $k$ real, y perpendiculares cuando $\\vec v\\cdot\\vec u=0$.'));
     c3.append(el('div',{class:'formula',html:'$$r_1\\parallel r_2 \\iff \\vec v=k\\vec u \\qquad\\qquad r_1\\perp r_2 \\iff \\vec v\\cdot\\vec u=0$$'}));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 12, sección «Posición relativa entre rectas» (Geometría 2026-2).'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: ángulo entre rectas ---------- */
@@ -226,7 +223,6 @@ registerModule({
     c4.append(el('p',{class:'note'},'Al elegir para la segunda recta el vector director opuesto, $-\\vec u$ en vez de $\\vec u$, el ángulo que se mide entre vectores pasa a ser el obtuso: la recta es la misma, pero el vector apunta hacia el otro lado. La fórmula con pendientes evita esa ambigüedad tomando siempre el valor absoluto.'));
     c4.append(el('div',{class:'formula',html:'$$\\tan\\theta=\\left\\lvert\\dfrac{m_2-m_1}{1+m_1m_2}\\right\\rvert$$'}));
     c4.append(el('p',{class:'note'},'Cuando $1+m_1m_2=0$ la fracción se indefine — no porque el ángulo no exista, sino porque en ese caso las rectas son perpendiculares y el ángulo mide exactamente $90°$.'));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 12, sección «Ángulo entre rectas» y la observación sobre la elección del vector director (Geometría 2026-2).'));
     sec.append(c4);
   }
 });

@@ -1,4 +1,4 @@
-/* Clase 11 del curso: ecuación vectorial, paramétrica y simétrica de la recta.
+/* Ecuaciones de la recta: vectorial, parametrica y simetrica.
 
    La idea central: un punto y una dirección fijan la recta completa, y las
    tres formas de escribirla son la misma información contada de tres modos.
@@ -50,7 +50,6 @@ registerModule({
     c1.append(el('p',{class:'note'},'Un valor negativo de $t$ no queda fuera de la recta: corresponde al lado opuesto de $P_0$, sobre la misma dirección. Por eso un punto y un vector director fijan la recta completa, no solo un rayo que parte de $P_0$.'));
     c1.append(el('div',{class:'formula',html:'$$(x,y)=P_0+t\\vec v \\qquad P_0=(2,1),\\ \\ \\vec v=(3,-1),\\ \\ t\\in\\mathbb{R}$$'}));
     c1.append(el('p',{class:'note'},'$P_0$ es un punto conocido de la recta y $\\vec v=(a,b)$ es el vector director, la dirección en la que avanza. Con esos dos datos la recta queda completamente determinada.'));
-    c1.append(el('p',{class:'fuente'},'Fuente: Clase 11 «Ecuación vectorial de la recta», Definición 2.1, y el contexto del dron que abre la clase (Geometría 2026-2).'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: las tres formas, actualizándose juntas ---------- */
@@ -90,7 +89,6 @@ registerModule({
     c2.append(el('p',{class:'note'},'Las tres líneas anteriores son la misma cuenta escrita de tres formas distintas: cambiar $t$ mueve el punto sobre la recta y actualiza las tres a la vez, porque describen exactamente lo mismo.'));
     c2.append(el('div',{class:'formula',html:'$$(x,y)=P_0+t\\vec v \\qquad \\begin{cases}x=x_0+at\\\\ y=y_0+bt\\end{cases} \\qquad \\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}$$'}));
     c2.append(el('p',{class:'note'},'La forma simétrica exige $a\\neq0$ y $b\\neq0$: si alguno de los dos es cero, esa fracción no existe.'));
-    c2.append(el('p',{class:'fuente'},'Fuente: Clase 11, sección «Ecuaciones paramétricas y simétricas de la recta» (Geometría 2026-2).'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: el vector director no es único ---------- */
@@ -128,7 +126,6 @@ registerModule({
     c3.append(el('p',{class:'note'},'Con $\\lambda$ negativo el vector naranjo se invierte, pero el punto violeta sigue recorriendo la misma recta: cambia el sentido en que crece el parámetro, no la recta en sí.'));
     c3.append(el('div',{class:'formula',html:'$$P_0+t\\vec v=P_0+t\'(\\lambda\\vec v) \\qquad t\'=\\dfrac{t}{\\lambda},\\ \\ \\lambda\\neq0$$'}));
     c3.append(el('p',{class:'note'},'Por eso una recta no tiene «el» vector director: tiene una familia entera de ellos, todos múltiplos entre sí.'));
-    c3.append(el('p',{class:'fuente'},'Fuente: Clase 11, «Propiedades generales» — la recta está determinada por un punto y un vector director (Geometría 2026-2); la reparametrización con $\\lambda$ es elaboración propia sobre esa misma propiedad.'));
     sec.append(c3);
 
     /* ---------- Tarjeta 4: rectas verticales y horizontales ---------- */
@@ -159,7 +156,6 @@ registerModule({
 
     c4.append(el('p',{class:'note'},'En ninguna de las dos rectas existe la forma simétrica, porque su fórmula divide por $a$ y por $b$: con cualquiera de los dos en cero, esa división no está definida. La forma paramétrica, en cambio, sigue funcionando sin problema.'));
     c4.append(el('div',{class:'formula',html:'$$a=0 \\implies x=x_0 \\qquad\\qquad b=0 \\implies y=y_0$$'}));
-    c4.append(el('p',{class:'fuente'},'Fuente: Clase 11, «Propiedades generales» (Geometría 2026-2).'));
     sec.append(c4);
   }
 });
