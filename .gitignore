@@ -12,3 +12,7 @@ capturas/
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Guía interna de contribución: contiene rutas locales y decisiones de diseño,
+# no debe publicarse en el repo.
+CONTRIBUIR.md
