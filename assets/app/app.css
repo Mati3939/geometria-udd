@@ -155,10 +155,23 @@ main{max-width:1150px; margin:0 auto; padding:1rem 1.2rem 4rem;}
    cinco magnitudes se repartían en una única fila a lo ancho de la tarjeta, que
    es exactamente el renglón ilegible que esto venía a resolver. */
 @media (min-width:620px){ .lectura{grid-template-columns:1fr 1fr;} }
+/* Cada fila mide UNA línea siempre: si un rótulo o un valor largo envuelve, la
+   grilla cambia de alto y la tarjeta late al mover el deslizador. Por eso las
+   dos mitades van sin envolver, y lo que no entra se recorta. Corolario para
+   quien escribe un módulo: rótulos y valores cortos. */
 .lectura-item{display:flex; justify-content:space-between; gap:.6rem;
-  border-bottom:1px solid var(--border); padding:.2rem 0;}
-.lectura-item .k{color:var(--muted);}
-.lectura-item .v{font-family:ui-monospace,Consolas,monospace; color:var(--ink); white-space:nowrap;}
+  border-bottom:1px solid var(--border); padding:.2rem 0; min-width:0;}
+.lectura-item .k{color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.lectura-item .v{font-family:ui-monospace,Consolas,monospace; color:var(--ink);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:0 1 auto;}
+/* celda de relleno: ocupa su lugar sin pintarse (ver lectura() en core.js) */
+.lectura-item.vacio{visibility:hidden;}
+
+/* Párrafo que cambia de texto al mover un control. Sin reservarle el alto del
+   caso más largo, pasar de un mensaje de dos líneas a uno de tres empuja hacia
+   abajo todo lo que sigue, y al arrastrar el deslizador la página late. */
+.card p.vivo{min-height:3.3em;}
+@media (max-width:620px){ .card p.vivo{min-height:5.2em;} }
 .btn{
   border:1px solid var(--border); background:var(--surface); color:var(--ink);
   font:inherit; font-size:.85rem; padding:.32rem .7rem; border-radius:8px; cursor:pointer;

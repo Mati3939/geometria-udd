@@ -14,9 +14,13 @@ registerModule({
     c1.append(el('p',{},'Una ',el('b',{},'ecuación trigonométrica'),' es una igualdad de la forma $E(x)=0$ que se cumple solo para ciertos valores de $x$ — a diferencia de una ',el('b',{},'identidad'),', que vale para todo $x$ del dominio. Resolverla es hallar ese conjunto de valores, respetando el dominio y la periodicidad de la función involucrada.'));
     c1.append(el('p',{},'El esquema para resolverla es siempre el mismo: se identifica el dominio y las restricciones, se reduce con identidades a una expresión con una sola función trigonométrica, se resuelve esa ecuación elemental considerando la periodicidad, y se verifica. La tarjeta de abajo muestra el paso central para $\\operatorname{sen}x=a$: la recta horizontal $y=a$ sube y baja sola, y corta la curva $y=\\operatorname{sen}x$ una vez por cada vuelta en la que la ecuación tiene solución.'));
 
-    const leerC1=el('p',{class:'note'});
     const cajaC1=el('div',{class:'plot'}); c1.append(cajaC1);
     const P1=Plano(cajaC1,{xMin:-3*Math.PI,xMax:3*Math.PI,yMin:-1.7,yMax:1.7,alto:340});
+    const leerC1=lectura(c1);
+    const avisoC1=textoVivo(c1,'note').calibrar([
+      'Los cortes marcados son los de este tramo; las dos familias siguen fuera de él, de vuelta en vuelta.',
+      'Con $|a|\\gt 1$ la recta no llega a tocar la curva en ningún punto: la ecuación no tiene solución.'
+    ]);
     P1.animar((P,t)=>{
       const a=1.3*Math.sin(t*Math.PI/4);
       P.ejes();
@@ -32,11 +36,16 @@ registerModule({
           if(x2>=-3*Math.PI&&x2<=3*Math.PI){ P.punto(x2,a,{color:'--s7',r:5}); n++; }
         }
       }
-      leerC1.textContent='a = '+a.toFixed(2)+(Math.abs(a)<=1
-        ? ' · '+n+' cortes marcados en el tramo dibujado (la familia sigue fuera de él)'
-        : ' · |a| > 1: la recta no corta la curva — no hay solución');
+      /* rótulos y valores cortos, y de largo parejo entre los dos casos: la
+         lectura tiene que medir lo mismo con y sin solución, o la tarjeta
+         late mientras la recta sube y baja */
+      leerC1.set(Math.abs(a)<=1
+        ? [['a', a.toFixed(2)],['cortes a la vista', String(n)]]
+        : [['a', a.toFixed(2)],['cortes a la vista', 'ninguno']]);
+      avisoC1.set(Math.abs(a)<=1
+        ? 'Los cortes marcados son los de este tramo; las dos familias siguen fuera de él, de vuelta en vuelta.'
+        : 'Con $|a|\\gt 1$ la recta no llega a tocar la curva en ningún punto: la ecuación no tiene solución.');
     },{duracion:8});
-    c1.append(leerC1);
 
     c1.append(el('p',{},'Cuando $|a|\\le 1$ aparecen ',el('b',{},'dos'),' familias de cortes, una por cada vuelta: una nace en $\\operatorname{arcsen} a$ y avanza de a $2\\pi$ (puntos verdes), la otra nace en $\\pi-\\operatorname{arcsen} a$ y avanza también de a $2\\pi$ (puntos violeta). Cuando $|a|>1$ la recta queda por completo arriba o por completo abajo de la curva: no hay ningún corte, y la ecuación no tiene solución.'));
     c1.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(x)=a,\\ |a|\\le 1 \\;\\Longrightarrow\\; x=\\operatorname{arcsen} a+2k\\pi \\quad\\text{ó}\\quad x=\\pi-\\operatorname{arcsen} a+2k\\pi,\\qquad k\\in\\mathbb{Z}$$'}));
@@ -50,7 +59,6 @@ registerModule({
     c2.append(el('p',{},'Sobre la circunferencia $x^2+y^2=1$, dos ángulos distintos pueden compartir el mismo seno o el mismo coseno. Ahí nacen las dos familias de la tarjeta anterior.'));
 
     let modoC2='sen', thC2=40;
-    const leerC2=el('p',{class:'note'});
     const cajaC2=el('div',{class:'plot'}); c2.append(cajaC2);
     const P2=Plano(cajaC2,{xMin:-1.35,xMax:1.35,yMin:-1.35,yMax:1.35,alto:340,iso:true});
     P2.dibujar(P=>{
@@ -71,18 +79,15 @@ registerModule({
     function actualizarC2(){
       const th=thC2*Math.PI/180, cx=Math.cos(th), cy=Math.sin(th);
       if(modoC2==='sen'){
-        leerC2.textContent='θ = '+thC2+'° · sen θ = '+cy.toFixed(3)+' · el ángulo π−θ = '+(180-thC2)+'° tiene el mismo seno.';
+        leerC2.set([['θ', thC2+'°'],['sen θ', cy.toFixed(3)],['ángulo con el mismo seno', 'π−θ = '+(180-thC2)+'°']]);
       } else {
-        leerC2.textContent='θ = '+thC2+'° · cos θ = '+cx.toFixed(3)+' · el ángulo −θ = '+(-thC2)+'° tiene el mismo coseno.';
+        leerC2.set([['θ', thC2+'°'],['cos θ', cx.toFixed(3)],['ángulo con el mismo coseno', '−θ = '+(-thC2)+'°']]);
       }
     }
-    c2.append(el('div',{class:'controls'},
-      el('label',{},'θ:'),
-      el('input',{type:'range',min:'-150',max:'150',step:'1',value:String(thC2),
-        oninput:e=>{ thC2=parseInt(e.target.value,10); P2.redibujar(); actualizarC2(); }})
-    ));
+    controlValor(c2,{label:'θ',min:-150,max:150,paso:1,valor:thC2,
+      onChange:v=>{ thC2=v; P2.redibujar(); actualizarC2(); }});
     btnGroup(c2,[{label:'Mismo seno',value:'sen'},{label:'Mismo coseno',value:'cos'}],v=>{ modoC2=v; P2.redibujar(); actualizarC2(); });
-    c2.append(leerC2);
+    const leerC2=lectura(c2);
     actualizarC2();
 
     c2.append(el('p',{},'El seno es la altura: dos puntos a la misma altura son simétricos respecto del eje $y$, y sus ángulos suman $\\pi$. El coseno es la base: dos puntos con la misma base son simétricos respecto del eje $x$, y sus ángulos son opuestos. Con el mismo argumento salen las soluciones generales de coseno y tangente:'));
@@ -98,9 +103,9 @@ registerModule({
     c3.append(el('div',{class:'formula',html:'$$-2\\operatorname{sen}^2x-3\\cos x+3=0$$'}));
     c3.append(el('p',{},'se reescribe entera en términos del coseno, y con $u=\\cos x$ queda un polinomio de segundo grado en $u$:'));
 
-    const leerC3=el('p',{class:'note'});
     const cajaC3=el('div',{class:'plot'}); c3.append(cajaC3);
     const P3=Plano(cajaC3,{xMin:-0.6,xMax:1.6,yMin:-0.6,yMax:2.2,alto:300});
+    const leerC3=lectura(c3);
     P3.animar((P,t)=>{
       const u=0.5+1.1*Math.sin(t*Math.PI/3);
       const y=2*u*u-3*u+1;
@@ -110,9 +115,8 @@ registerModule({
       P.punto(1,0,{color:'--s7',r:6}); P.texto(1,0,'u = 1',{color:'--s7',dx:8,dy:-10});
       P.parametrica(s=>[u,y*s],0,1,{color:'--muted',grosor:1.2,guiones:true});
       P.punto(u,y,{color:'--s4',r:5});
-      leerC3.textContent='u = '+u.toFixed(2)+' · 2u² − 3u + 1 = '+y.toFixed(2)+(Math.abs(y)<0.03?'  ← cero':'');
+      leerC3.set([['u', u.toFixed(2)],['2u² − 3u + 1', y.toFixed(2)+(Math.abs(y)<0.03?' ← cero':'')]]);
     },{duracion:6});
-    c3.append(leerC3);
 
     c3.append(el('div',{class:'formula',html:'$$2u^2-3u+1=0 \\;\\Longleftrightarrow\\; (2u-1)(u-1)=0$$'}));
     c3.append(el('p',{},'Es decir, $u=\\tfrac12$ o $u=1$. Deshaciendo el cambio, $\\cos x=\\tfrac12$ o $\\cos x=1$ — dos ecuaciones elementales, cada una con su propia familia:'));
@@ -128,12 +132,12 @@ registerModule({
     c4.append(el('div',{class:'formula',html:'$$(2\\operatorname{sen}x-1)\\cos x=0$$'}));
     c4.append(el('p',{},'basta dibujar cada factor por separado y juntar sus ceros. El barrido de abajo los va marcando a medida que los encuentra.'));
 
-    const leerC4=el('p',{class:'note'});
     const cajaC4=el('div',{class:'plot'}); c4.append(cajaC4);
     const xMinC4=-0.6, xMaxC4=6.9;
     const cerosF1=[Math.PI/6,5*Math.PI/6,Math.PI/6+2*Math.PI].filter(x=>x>=xMinC4&&x<=xMaxC4);
     const cerosF2=[Math.PI/2,Math.PI/2+Math.PI,Math.PI/2+2*Math.PI].filter(x=>x>=xMinC4&&x<=xMaxC4);
     const P4=Plano(cajaC4,{xMin:xMinC4,xMax:xMaxC4,yMin:-3.3,yMax:3.3,alto:320});
+    const leerC4=lectura(c4);
     P4.animar((P,t)=>{
       const sweepX=xMinC4+(xMaxC4-xMinC4)*(t/7);
       P.ejes();
@@ -144,11 +148,12 @@ registerModule({
       let n1=0,n2=0;
       cerosF1.forEach(x=>{ const listo=x<=sweepX; if(listo)n1++; P.punto(x,0,{color:'--s2',r:listo?6:2.5}); });
       cerosF2.forEach(x=>{ const listo=x<=sweepX; if(listo)n2++; P.punto(x,0,{color:'--s1',r:listo?6:2.5}); });
-      leerC4.textContent='ceros de 2 sen x − 1 encontrados: '+n1+'/'+cerosF1.length
-        +' · ceros de cos x encontrados: '+n2+'/'+cerosF2.length
-        +' · unión hasta acá: '+(n1+n2)+' soluciones';
+      leerC4.set([
+        ['ceros de 2 sen x − 1 encontrados', n1+'/'+cerosF1.length],
+        ['ceros de cos x encontrados', n2+'/'+cerosF2.length],
+        ['unión hasta acá', (n1+n2)+' soluciones']
+      ]);
     },{duracion:7});
-    c4.append(leerC4);
 
     c4.append(el('p',{class:'note'},'El verde se anula donde $\\operatorname{sen}x=\\tfrac12$; el azul, donde $\\cos x=0$. Son puntos distintos: la ecuación completa vale cero en todos ellos, no solo en los que comparten los dos factores — por eso la solución final es la unión, nunca la intersección.'));
     c4.append(el('div',{class:'formula',html:'$$2\\operatorname{sen}x-1=0 \\;\\Longrightarrow\\; x=\\frac{\\pi}{6}+2k\\pi\\ \\text{ó}\\ x=\\frac{5\\pi}{6}+2k\\pi$$'}));

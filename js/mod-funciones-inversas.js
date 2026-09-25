@@ -13,11 +13,11 @@ registerModule({
     c1.append(el('h3',{},'El seno no es inyectivo: hay que recortarle el dominio'));
     c1.append(el('p',{},'El seno repite cada valor infinitas veces — $\\operatorname{sen}(0)=\\operatorname{sen}(\\pi)=\\operatorname{sen}(2\\pi)=0$, por ejemplo — así que no tiene una inversa sobre todo su dominio: para un mismo $y$ habría muchos $x$ posibles entre los cuales elegir. La solución es recortar el dominio a un tramo donde el seno sea monótono y siga cubriendo todo $[-1,1]$: el tramo elegido es $[-\\pi/2,\\pi/2]$.'));
 
-    const leerC1=el('p',{class:'note'});
     const cajaC1a=el('div',{class:'plot'}); c1.append(cajaC1a);
     const P1a=Plano(cajaC1a,{xMin:-2*Math.PI,xMax:2*Math.PI,yMin:-1.4,yMax:1.4,alto:260});
     const cajaC1b=el('div',{class:'plot'}); c1.append(cajaC1b);
     const P1b=Plano(cajaC1b,{xMin:-1.6,xMax:1.6,yMin:-1.6,yMax:1.6,alto:300,iso:true});
+    const leerC1=lectura(c1);
 
     P1a.animar((P,t)=>{
       const x0=(Math.PI/2)*Math.sin(t*Math.PI/3);
@@ -36,23 +36,27 @@ registerModule({
       P.parametrica(s=>[-1.6+3.2*s,-1.6+3.2*s],0,1,{color:'--grid',grosor:1.2,guiones:true});
       P.curva(x=>(x>=-1&&x<=1)?Math.asin(x):NaN,{color:'--s1',grosor:2.6});
       P.punto(y0,x0,{color:'--s7',r:5});
-      leerC1.textContent='x = '+x0.toFixed(2)+' · (sen x, x) = ('+y0.toFixed(2)+', '+x0.toFixed(2)+') · arcsen('+y0.toFixed(2)+') = '+x0.toFixed(2);
+      leerC1.set([
+        ['x', x0.toFixed(2)],
+        ['sen x', y0.toFixed(2)],
+        ['arcsen(sen x)', x0.toFixed(2)]
+      ]);
     },{duracion:6});
-    c1.append(leerC1);
 
     c1.append(el('div',{class:'formula',html:'$$y=\\operatorname{sen}x,\\quad x\\in\\left[-\\tfrac{\\pi}{2},\\tfrac{\\pi}{2}\\right]$$'}));
     c1.append(el('div',{class:'formula',html:'$$\\Longrightarrow\\quad x=\\operatorname{arcsen} y,\\quad y\\in[-1,1]$$'}));
     c1.append(el('p',{class:'note'},'Dominio de $\\operatorname{arcsen}$: $[-1,1]$ (todo lo que el seno recortado alcanza a producir). Recorrido de $\\operatorname{arcsen}$: $[-\\pi/2,\\pi/2]$ (el mismo tramo que se recortó). El punto violeta de arriba y el de abajo son el mismo dato leído en los dos sentidos: cada $x$ del tramo recortado corresponde a un único punto de la curva de $\\operatorname{arcsen}$, y viceversa.'));
     sec.append(c1);
 
-    /* ---------- Tarjeta 2: el error clásico, x contra arcsen(sen x) ---------- */
+    /* ---------- Tarjeta 2: por qué aplicar arcsen a los dos lados da una sola solución ---------- */
     const c2=el('div',{class:'card'});
-    c2.append(el('h3',{},'$\\operatorname{arcsen}(\\operatorname{sen}x)$ no siempre es $x$'));
-    c2.append(el('p',{},'El recorte de la tarjeta anterior tiene una consecuencia que engaña seguido: componer $\\operatorname{arcsen}$ con $\\operatorname{sen}$ solo deshace la operación mientras $x$ se quede dentro de $[-\\pi/2,\\pi/2]$. Fuera de ese tramo, $\\operatorname{arcsen}(\\operatorname{sen}x)$ devuelve otro valor. El deslizador compara $x$ con $\\operatorname{arcsen}(\\operatorname{sen}x)$ en cada punto.'));
+    c2.append(el('h3',{},'Por qué aplicar $\\operatorname{arcsen}$ a los dos lados no da todas las soluciones'));
+    c2.append(el('p',{},'Al resolver una ecuación como $\\operatorname{sen}x=a$, aplicar $\\operatorname{arcsen}$ a los dos lados parece despejar $x$ directamente. Pero $\\operatorname{arcsen}$ solo puede devolver un valor de su recorrido, $[-\\pi/2,\\pi/2]$ —el recorte de la tarjeta anterior—, así que ese paso entrega ',el('b',{},'un único'),' ángulo, nunca los demás que también cumplen la ecuación. El deslizador compara $x$ con $\\operatorname{arcsen}(\\operatorname{sen}x)$ en cada punto para ver exactamente qué devuelve ese paso.'));
 
     let xC2=1.0;
-    const leerC2a=el('p',{});
-    const leerC2b=el('p',{class:'note'});
+    let leerC2a=null;
+    const MSG_DENTRO='x cae dentro de $[-\\pi/2,\\pi/2]$: ahí, y solo ahí, aplicar $\\operatorname{arcsen}$ recupera exactamente x.';
+    const MSG_FUERA='x cae fuera de $[-\\pi/2,\\pi/2]$: aplicar $\\operatorname{arcsen}$ no devuelve x, sino el ángulo de esa franja que comparte su mismo seno — la otra solución de la ecuación queda pendiente.';
     const cajaC2=el('div',{class:'plot'}); c2.append(cajaC2);
     const xMinC2=-5*Math.PI/2, xMaxC2=5*Math.PI/2;
     const P2=Plano(cajaC2,{xMin:xMinC2,xMax:xMaxC2,yMin:-2.1,yMax:2.1,alto:320});
@@ -69,25 +73,25 @@ registerModule({
       const y0=arcsinSen(xC2);
       P.punto(xC2,y0,{color:'--s7',r:6});
     });
-    c2.append(el('div',{class:'controls'},
-      el('label',{},'x:'),
-      el('input',{type:'range',min:'-7.85',max:'7.85',step:'0.02',value:String(xC2),
-        oninput:e=>{ xC2=parseFloat(e.target.value); P2.redibujar(); actualizarC2(); }})
-    ));
-    c2.append(leerC2a); c2.append(leerC2b);
+    controlValor(c2,{label:'x',min:-7.85,max:7.85,paso:0.02,valor:xC2,unidad:'',
+      onChange:v=>{ xC2=v; P2.redibujar(); actualizarC2(); }});
+    /* los dos mensajes tienen largos muy distintos: se calibra con ambos
+       para que la tarjeta no cambie de alto al arrastrar */
+    leerC2a=textoVivo(c2).calibrar([MSG_DENTRO,MSG_FUERA]);
+    const leerC2b=lectura(c2);
     function actualizarC2(){
       const y0=arcsinSen(xC2);
       const coincide=Math.abs(y0-xC2)<1e-9;
-      leerC2a.innerHTML='x = '+xC2.toFixed(2)+' · arcsen(sen x) = '+y0.toFixed(2)
-        +(coincide?' · <b>coinciden</b>':' · <b>no coinciden</b>');
-      leerC2b.textContent=coincide
-        ? 'x está dentro de la franja verde: ahí, y solo ahí, arcsen deshace al seno.'
-        : 'x quedó fuera de [−π/2, π/2]: arcsen(sen x) devuelve el ángulo de la franja verde que tiene el mismo seno que x, no x.';
+      leerC2a.set(coincide?MSG_DENTRO:MSG_FUERA);
+      leerC2b.set([
+        ['x', xC2.toFixed(2)],
+        ['arcsen(sen x)', y0.toFixed(2)]
+      ]);
     }
     actualizarC2();
 
-    c2.append(el('p',{},'La curva azul es $\\operatorname{arcsen}(\\operatorname{sen}x)$: un diente de sierra que se apoya en la diagonal $y=x$ únicamente dentro de la franja verde, y que fuera de ella sube y baja entre $-\\tfrac\\pi2$ y $\\tfrac\\pi2$ sin volver a tocarla nunca.'));
-    c2.append(el('p',{class:'note'},'Regla práctica: $\\operatorname{arcsen}(\\operatorname{sen}x)=x$ solo si $x\\in\\left[-\\tfrac\\pi2,\\ \\tfrac\\pi2\\right]$, y en ningún otro caso. Fuera de ese tramo el resultado es el único ángulo de $\\left[-\\tfrac\\pi2,\\tfrac\\pi2\\right]$ que comparte seno con $x$ — su punto gemelo en esa franja. Conviene desconfiar del atajo de «sumar o restar vueltas»: para $x$ entre $-\\tfrac\\pi2+2k\\pi$ y $\\tfrac\\pi2+2k\\pi$ el resultado es $x-2k\\pi$, así que $\\operatorname{arcsen}(\\operatorname{sen}2\\pi)=0$ y no $2\\pi$.'));
+    c2.append(el('p',{},'La curva azul es $\\operatorname{arcsen}(\\operatorname{sen}x)$: un diente de sierra que se apoya en la diagonal $y=x$ únicamente dentro de la franja verde, y que fuera de ella sube y baja entre $-\\tfrac\\pi2$ y $\\tfrac\\pi2$ sin volver a tocarla nunca. Ese diente de sierra es, mirado de otra forma, el motivo por el que aplicar $\\operatorname{arcsen}$ a los dos lados de una ecuación es un paso incompleto: siempre aterriza en la franja verde, nunca fuera de ella.'));
+    c2.append(el('p',{class:'note'},'Ejemplo concreto: $\\operatorname{arcsen}(\\operatorname{sen}2\\pi)=0$, no $2\\pi$, porque $2\\pi$ queda lejos de $\\left[-\\tfrac\\pi2,\\tfrac\\pi2\\right]$ y $\\operatorname{arcsen}$ devuelve el único ángulo de esa franja que comparte seno con $2\\pi$. Por eso, al resolver $\\operatorname{sen}x=a$ aplicando $\\operatorname{arcsen}$ a ambos lados, $x=\\operatorname{arcsen}a$ es solo una de las dos familias de solución — la otra, la que queda fuera de $\\left[-\\tfrac\\pi2,\\tfrac\\pi2\\right]$, se recupera aparte con la simetría de la circunferencia respecto del eje $y$.'));
     sec.append(c2);
 
     /* ---------- Tarjeta 3: dominio y recorrido de arccos y arctan ---------- */
@@ -121,7 +125,6 @@ registerModule({
     c4.append(el('p',{},'Para resolverlas se aísla la función inversa y se aplica su definición: si $\\arccos(y)=\\alpha$, entonces $y=\\cos\\alpha$. Como $\\arccos$ ya es una función (biyectiva sobre su recorrido), la recta horizontal la corta ',el('b',{},'a lo sumo una vez'),', a diferencia de lo que ocurre con las funciones trigonométricas directas, que toman cada valor infinitas veces.'));
 
     let alturaC4=0.9;
-    const leerC4=el('p',{class:'note'});
     const cajaC4=el('div',{class:'plot'}); c4.append(cajaC4);
     const P4=Plano(cajaC4,{xMin:-1.3,xMax:1.3,yMin:-0.5,yMax:3.6,alto:300});
     P4.dibujar(P=>{
@@ -132,16 +135,17 @@ registerModule({
         const x0=Math.cos(alturaC4);
         P.punto(x0,alturaC4,{color:'--s7',r:6});
       }
-      leerC4.textContent=(alturaC4>=0&&alturaC4<=Math.PI)
-        ? 'altura = '+alturaC4.toFixed(2)+' · único corte en x = '+Math.cos(alturaC4).toFixed(3)+' = cos('+alturaC4.toFixed(2)+')'
-        : 'altura = '+alturaC4.toFixed(2)+' · fuera de [0, π]: no hay corte — arccos nunca toma ese valor.';
     });
-    c4.append(el('div',{class:'controls'},
-      el('label',{},'altura:'),
-      el('input',{type:'range',min:'-0.4',max:'3.5',step:'0.02',value:String(alturaC4),
-        oninput:e=>{ alturaC4=parseFloat(e.target.value); P4.redibujar(); }})
-    ));
-    c4.append(leerC4);
+    function actualizarC4(){
+      if(alturaC4>=0&&alturaC4<=Math.PI){
+        leerC4.set([['altura', alturaC4.toFixed(2)],['único corte en x', Math.cos(alturaC4).toFixed(3)]]);
+      } else {
+        leerC4.set([['altura', alturaC4.toFixed(2)],['corte', 'no hay — fuera de [0, π]']]);
+      }
+    }
+    controlValor(c4,{label:'altura',min:-0.4,max:3.5,paso:0.02,valor:alturaC4,unidad:'',
+      onChange:v=>{ alturaC4=v; P4.redibujar(); actualizarC4(); }});
+    const leerC4=lectura(c4); actualizarC4();
 
     c4.append(el('p',{},'Ejemplo verificado: para resolver $\\arccos(2x+\\sqrt2)=\\pi/4$ se aplica la definición y queda $2x+\\sqrt2=\\cos(\\pi/4)=\\tfrac{\\sqrt2}{2}$, de donde:'));
     c4.append(el('div',{class:'formula',html:'$$x=\\frac{\\frac{\\sqrt2}{2}-\\sqrt2}{2}=-\\frac{\\sqrt2}{4}$$'}));
@@ -154,7 +158,6 @@ registerModule({
     c5.append(el('p',{},'Varias identidades entre funciones inversas se leen directo de un triángulo rectángulo. Para $x\\in(0,1)$, se arma uno con hipotenusa $1$, cateto adyacente $x$ y cateto opuesto $\\sqrt{1-x^2}$:'));
 
     let xC5=0.6;
-    const leerC5=el('p',{class:'note'});
     const cajaC5=el('div',{class:'plot'}); c5.append(cajaC5);
     const P5=Plano(cajaC5,{xMin:-0.25,xMax:1.25,yMin:-0.25,yMax:1.25,alto:340,iso:true});
     P5.dibujar(P=>{
@@ -173,16 +176,19 @@ registerModule({
       P.texto(xC5/2,y/2,'1',{color:'--s7',dx:-16,dy:-8});
       P.texto(0.12,0.05,'arccos x',{color:'--s2',tam:11});
       P.texto(xC5,y-0.14,'arctan …',{color:'--s1',tam:11,dx:-78});
-      leerC5.textContent='x = '+xC5.toFixed(2)+' · ángulo en el origen (arccos x) = '+thO.toFixed(3)
-        +' rad · ángulo de arriba (arctan) = '+thB.toFixed(3)
-        +' rad · suma = '+(thO+thB).toFixed(3)+' (π/2 ≈ '+(Math.PI/2).toFixed(3)+')';
     });
-    c5.append(el('div',{class:'controls'},
-      el('label',{},'x:'),
-      el('input',{type:'range',min:'0.05',max:'0.95',step:'0.01',value:String(xC5),
-        oninput:e=>{ xC5=parseFloat(e.target.value); P5.redibujar(); }})
-    ));
-    c5.append(leerC5);
+    function actualizarC5(){
+      const y=Math.sqrt(1-xC5*xC5), thO=Math.acos(xC5), thB=Math.atan(xC5/y);
+      leerC5.set([
+        ['x', xC5.toFixed(2)],
+        ['ángulo en el origen (arccos x)', thO.toFixed(3)+' rad'],
+        ['ángulo de arriba (arctan)', thB.toFixed(3)+' rad'],
+        ['suma', (thO+thB).toFixed(3)+' (π/2 ≈ '+(Math.PI/2).toFixed(3)+')']
+      ]);
+    }
+    controlValor(c5,{label:'x',min:0.05,max:0.95,paso:0.01,valor:xC5,unidad:'',
+      onChange:v=>{ xC5=v; P5.redibujar(); actualizarC5(); }});
+    const leerC5=lectura(c5); actualizarC5();
 
     c5.append(el('div',{class:'formula',html:'$$\\arccos x+\\arctan\\frac{x}{\\sqrt{1-x^2}}=\\frac{\\pi}{2}$$'}));
     c5.append(el('p',{class:'note'},'Los dos ángulos agudos de un triángulo rectángulo suman $\\pi/2$: no hace falta más que eso. El ángulo en el origen es $\\arccos x$ por construcción (cateto adyacente $x$, hipotenusa $1$); el de arriba es $\\arctan\\frac{x}{\\sqrt{1-x^2}}$ porque ahí el cateto opuesto al ángulo es $x$ y el adyacente es $\\sqrt{1-x^2}$. El contador de arriba confirma que la suma da $\\pi/2$ para cualquier $x$ del deslizador.'));

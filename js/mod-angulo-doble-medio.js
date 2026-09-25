@@ -12,7 +12,6 @@ registerModule({
     c1.append(el('p',{},'Al mover un solo ángulo $x$, el dibujo pone dos puntos sobre la circunferencia: uno en $x$ (azul) y otro en $2x$ (naranja). Cada punto deja caer su propia altura: esa altura ',el('b',{},'es'),' el seno.'));
 
     let xg1=50;
-    const leerC1=el('p',{class:'note'});
     const cajaP1=el('div',{class:'plot'}); c1.append(cajaP1);
     const P1=Plano(cajaP1,{xMin:-1.35,xMax:1.35,yMin:-1.35,yMax:1.35,alto:340,iso:true});
     P1.dibujar(P=>{
@@ -37,18 +36,20 @@ registerModule({
       P.texto(0.16*Math.cos(th/2),0.16*Math.sin(th/2),'x',{color:'--s4',tam:11});
       P.texto(0.46*Math.cos(th2/2),0.46*Math.sin(th2/2),'2x',{color:'--s7',tam:11});
     });
+    controlValor(c1,{label:'x',min:0,max:180,paso:1,valor:xg1,unidad:'°',
+      onChange:v=>{ xg1=v; P1.redibujar(); actualizarC1(); }});
+    const leerC1=lectura(c1);
     function actualizarC1(){
       const th=xg1*Math.PI/180;
       const s2x=Math.sin(2*th), dos_sc=2*Math.sin(th)*Math.cos(th), dos_s=2*Math.sin(th);
-      leerC1.textContent='x = '+xg1+'° · sen(2x) = '+s2x.toFixed(3)+' · 2 sen(x) cos(x) = '+dos_sc.toFixed(3)
-        +' → el mismo número · 2 sen(x) = '+dos_s.toFixed(3)+' ≠ sen(2x): multiplicar el seno por 2 no es duplicar el ángulo.';
+      leerC1.set([
+        ['x', xg1+'°'],
+        ['sen(2x)', s2x.toFixed(3)],
+        ['2 sen(x) cos(x)', dos_sc.toFixed(3)],
+        ['2 sen(x)', dos_s.toFixed(3)]
+      ]);
     }
-    c1.append(el('div',{class:'controls'},
-      el('label',{},'x:'),
-      el('input',{type:'range',min:'0',max:'180',step:'1',value:String(xg1),
-        oninput:e=>{ xg1=parseInt(e.target.value,10); P1.redibujar(); actualizarC1(); }})
-    ));
-    c1.append(leerC1); actualizarC1();
+    actualizarC1();
 
     c1.append(el('p',{},'El segmento naranja (sen 2x) no es el doble del azul (sen x): son alturas de puntos distintos sobre la misma circunferencia, y crecen y decrecen a ritmos distintos. Lo que sí coincide, siempre, es sen(2x) con $2\\operatorname{sen}(x)\\cos(x)$: mueve el deslizador y compara los dos números de arriba.'));
     c1.append(el('p',{class:'note'},'Cerca de $x=90°$ se ve el caso más claro: sen(x) llega a su máximo (1), pero 2x ya pasó los 180° y sen(2x) va camino a 0 — las dos curvas no tienen por qué ir en la misma dirección.'));
@@ -70,7 +71,6 @@ registerModule({
     c3.append(el('p',{},'Las tres expresiones de $\\cos(2x)$ no son tres fórmulas distintas: son la misma función escrita de tres maneras. El gráfico las traza a las cuatro (la definición y las tres reescrituras) y las cuatro caen exactamente en el mismo trazo.'));
 
     let x0c3=40;
-    const leerC3=el('p',{class:'note'});
     const cajaP3=el('div',{class:'plot'}); c3.append(cajaP3);
     const P3=Plano(cajaP3,{xMin:0,xMax:360,yMin:-1.3,yMax:1.3,alto:300,iso:false});
     P3.dibujar(P=>{
@@ -84,18 +84,21 @@ registerModule({
       P.parametrica(s=>[x0c3,w.yMin+(w.yMax-w.yMin)*s],0,1,{color:'--muted',grosor:1,guiones:true});
       P.punto(x0c3,y0,{color:'--s1',r:5});
     });
+    controlValor(c3,{label:'x',min:0,max:360,paso:1,valor:x0c3,unidad:'°',
+      onChange:v=>{ x0c3=v; P3.redibujar(); actualizarC3(); }});
+    const leerC3=lectura(c3);
     function actualizarC3(){
       const r=x0c3*Math.PI/180;
       const a=Math.cos(2*r), b=Math.cos(r)*Math.cos(r)-Math.sin(r)*Math.sin(r), c=1-2*Math.sin(r)*Math.sin(r), d=2*Math.cos(r)*Math.cos(r)-1;
-      leerC3.textContent='x = '+x0c3+'° · cos²x−sen²x = '+b.toFixed(3)+' · 1−2sen²x = '+c.toFixed(3)
-        +' · 2cos²x−1 = '+d.toFixed(3)+' · cos(2x) = '+a.toFixed(3)+' — las cuatro coinciden.';
+      leerC3.set([
+        ['x', x0c3+'°'],
+        ['cos²x−sen²x', b.toFixed(3)],
+        ['1−2sen²x', c.toFixed(3)],
+        ['2cos²x−1', d.toFixed(3)],
+        ['cos(2x)', a.toFixed(3)]
+      ]);
     }
-    c3.append(el('div',{class:'controls'},
-      el('label',{},'x:'),
-      el('input',{type:'range',min:'0',max:'360',step:'1',value:String(x0c3),
-        oninput:e=>{ x0c3=parseInt(e.target.value,10); P3.redibujar(); actualizarC3(); }})
-    ));
-    c3.append(leerC3); actualizarC3();
+    actualizarC3();
 
     c3.append(el('p',{},'Las tres reescrituras salen de $\\operatorname{sen}^2\\alpha+\\cos^2\\alpha=1$ aplicada sobre $\\cos^2\\alpha-\\operatorname{sen}^2\\alpha$: reemplazando $\\cos^2\\alpha$ o $\\operatorname{sen}^2\\alpha$ se llega a las otras dos. Ninguna es más «correcta» — se elige según el dato disponible.'));
     c3.append(el('div',{class:'formula',html:'$$\\cos(2\\alpha)=\\cos^2\\alpha-\\operatorname{sen}^2\\alpha=1-2\\operatorname{sen}^2\\alpha=2\\cos^2\\alpha-1$$'}));
@@ -109,7 +112,6 @@ registerModule({
 
     let xg4=250;
     const reglaC4=el('p',{});
-    const leerC4=el('p',{class:'note'});
     const cajaP4=el('div',{class:'plot'}); c4.append(cajaP4);
     const P4=Plano(cajaP4,{xMin:-1.35,xMax:1.35,yMin:-1.35,yMax:1.35,alto:340,iso:true});
     function cuadrante(deg){
@@ -140,14 +142,18 @@ registerModule({
         +(Math.abs(cosH)<1e-9?'cero':(cosH>0?'positivo':'negativo'))
         +'. (El cuadrante de x —'+cqx+'— no interviene en esta decisión.)';
       renderMath(reglaC4);
-      leerC4.textContent='x = '+xg4+'° · x/2 = '+half.toFixed(1)+'° · sen(x/2) = '+senH.toFixed(3)+' · cos(x/2) = '+cosH.toFixed(3);
+      leerC4.set([
+        ['x', xg4+'°'],
+        ['x/2', half.toFixed(1)+'°'],
+        ['sen(x/2)', senH.toFixed(3)],
+        ['cos(x/2)', cosH.toFixed(3)]
+      ]);
     }
-    c4.append(el('div',{class:'controls'},
-      el('label',{},'x:'),
-      el('input',{type:'range',min:'0',max:'720',step:'1',value:String(xg4),
-        oninput:e=>{ xg4=parseInt(e.target.value,10); P4.redibujar(); actualizarC4(); }})
-    ));
-    c4.append(reglaC4); c4.append(leerC4); actualizarC4();
+    controlValor(c4,{label:'x',min:0,max:720,paso:1,valor:xg4,unidad:'°',
+      onChange:v=>{ xg4=v; P4.redibujar(); actualizarC4(); }});
+    c4.append(reglaC4);
+    const leerC4=lectura(c4);
+    actualizarC4();
 
     c4.append(el('p',{},'Es fácil razonar «x está en el cuadrante III, así que el seno es negativo» — pero la fórmula habla de $x/2$, no de $x$. Al mover el deslizador hasta un tramo donde el cuadrante de x y el de x/2 no coincidan, se ve con claridad qué segmento manda.'));
     c4.append(el('p',{class:'note'},'Por eso el deslizador llega hasta 720°: como x/2 avanza a la mitad de velocidad que x, mientras x completa dos vueltas completas, x/2 completa exactamente una — y pasa por los cuatro cuadrantes una sola vez.'));

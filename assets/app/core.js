@@ -334,6 +334,12 @@ function controlValor(mount,op){
 function lectura(mount){
   const caja=el('div',{class:'lectura'});
   mount.append(caja);
+  /* Alto estable: una lectura que a veces muestra 7 magnitudes y a veces 4
+     cambia de alto, y como vive arriba de párrafos y fórmulas, TODO lo que
+     sigue sube y baja mientras se arrastra el deslizador. Se recuerda el mayor
+     número de celdas mostrado y se rellena con celdas invisibles, así la caja
+     solo crece y nunca encoge. */
+  let maxCeldas=0;
   return {
     nodo:caja,
     set(pares){
@@ -341,6 +347,53 @@ function lectura(mount){
       for(const [k,v] of pares){
         caja.append(el('div',{class:'lectura-item'},
           el('span',{class:'k'},k),el('span',{class:'v'},String(v))));
+      }
+      maxCeldas=Math.max(maxCeldas,pares.length);
+      for(let i=pares.length;i<maxCeldas;i++){
+        caja.append(el('div',{class:'lectura-item vacio','aria-hidden':'true'},
+          el('span',{class:'k'},' '),el('span',{class:'v'},' ')));
+      }
+    }
+  };
+}
+
+/* Párrafo cuyo TEXTO cambia al mover un control.
+   Si un mensaje ocupa dos líneas y otro tres, al arrastrar el deslizador todo
+   lo que va debajo sube y baja. Acá el párrafo se queda con el alto del caso
+   más alto que conoce, así que nunca encoge.
+   `calibrar([...])` recibe todos los mensajes posibles, los mide una vez y
+   reserva el alto del más largo — con eso no late ni siquiera la primera vez
+   que aparece el mensaje largo. Se recalibra al cambiar el ancho de ventana,
+   porque ahí cambia en cuántas líneas cae cada texto. */
+function textoVivo(mount,clase){
+  const p=el('p',{class:clase||''});
+  mount.append(p);
+  let alto=0, candidatos=null, ultimo='';
+  const medir=html=>{
+    p.style.minHeight='';
+    p.innerHTML=html;
+    renderMath(p);
+    return p.offsetHeight;
+  };
+  const reservar=()=>{
+    if(!p.isConnected||!p.offsetParent)return;   /* módulo oculto: mide 0 */
+    alto=0;
+    if(candidatos)for(const c of candidatos)alto=Math.max(alto,medir(c));
+    alto=Math.max(alto,medir(ultimo));
+    p.style.minHeight=alto+'px';
+  };
+  addRelayout(p,reservar);
+  return {
+    nodo:p,
+    calibrar(lista){ candidatos=lista; reservar(); return this; },
+    set(html){
+      ultimo=html;
+      p.style.minHeight='';
+      p.innerHTML=html;
+      renderMath(p);
+      if(p.offsetParent){
+        alto=Math.max(alto,p.offsetHeight);
+        p.style.minHeight=alto+'px';
       }
     }
   };

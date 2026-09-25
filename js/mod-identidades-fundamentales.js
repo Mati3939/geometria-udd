@@ -119,7 +119,10 @@ registerModule({
     c4.append(el('p',{},'Para un $\\theta$ cuyo lado terminal no cae sobre un eje, el ',el('b',{},'ángulo de referencia'),' $\\theta_r$ es el ángulo agudo que ese lado terminal forma con el eje $x$. Al mover $\\theta$ se ve que $\\theta_r$ se mide siempre contra el eje horizontal, nunca contra el vertical.'));
 
     let thG=210;
-    const reglaC4=el('p',{});
+    /* El mensaje cambia con el deslizador y no siempre ocupa las mismas líneas:
+       va en un textoVivo, calibrado más abajo con los cinco mensajes posibles
+       para que la tarjeta no cambie de alto al arrastrar. */
+    let reglaC4=null;
     const cajaP4=el('div',{class:'plot'}); c4.append(cajaP4);
     const P4=Plano(cajaP4,{xMin:-1.35,xMax:1.35,yMin:-1.35,yMax:1.35,alto:340,iso:true});
     P4.dibujar(P=>{
@@ -157,8 +160,7 @@ registerModule({
          lee directo del punto sobre la circunferencia. */
       if(n%90===0){
         const par=['(1, 0)','(0, 1)','(−1, 0)','(0, −1)'][n/90];
-        reglaC4.innerHTML='El lado terminal cae sobre un eje, así que <b>no hay ángulo de referencia</b>: la definición pide un ángulo agudo contra el eje $x$ y acá no queda ninguno. El valor se lee directo del punto sobre la circunferencia.';
-        renderMath(reglaC4);
+        reglaC4.set('El lado terminal cae sobre un eje, así que <b>no hay ángulo de referencia</b>: la definición pide un ángulo agudo contra el eje $x$ y acá no queda ninguno. El valor se lee directo del punto sobre la circunferencia.');
         leerC4.set([
           ['θ', thG+'°'],
           ['equivale a', n+'°'],
@@ -173,8 +175,7 @@ registerModule({
       else if(n<270){ cuad='III'; regla='\\theta_r=\\theta-180^\\circ'; }
       else { cuad='IV';  regla='\\theta_r=360^\\circ-\\theta'; }
       const sg=v=>v>=0?'positivo':'negativo';
-      reglaC4.innerHTML='Cuadrante '+cuad+', así que la regla que corresponde es $'+regla+'$, y da $\\theta_r='+thrG.toFixed(0)+'^\\circ$.';
-      renderMath(reglaC4);
+      reglaC4.set('Cuadrante '+cuad+', así que la regla que corresponde es $'+regla+'$, y da $\\theta_r='+thrG.toFixed(0)+'^\\circ$.');
       leerC4.set([
         ['θ', thG+'°'],
         ['equivale a', n+'°'],
@@ -187,7 +188,16 @@ registerModule({
     }
     controlValor(c4,{label:'θ',min:-360,max:720,paso:1,valor:thG,
       onChange:v=>{ thG=v; P4.redibujar(); actualizarC4(); }});
-    c4.append(reglaC4);
+    reglaC4=textoVivo(c4);
+    /* los cinco mensajes posibles, medidos una sola vez: el párrafo se queda
+       con el alto del más largo y la tarjeta deja de latir al arrastrar */
+    reglaC4.calibrar([
+      'El lado terminal cae sobre un eje, así que <b>no hay ángulo de referencia</b>: la definición pide un ángulo agudo contra el eje $x$ y acá no queda ninguno. El valor se lee directo del punto sobre la circunferencia.',
+      'Cuadrante I, así que la regla que corresponde es $\\theta_r=\\theta$, y da $\\theta_r=30^\\circ$.',
+      'Cuadrante II, así que la regla que corresponde es $\\theta_r=180^\\circ-\\theta$, y da $\\theta_r=30^\\circ$.',
+      'Cuadrante III, así que la regla que corresponde es $\\theta_r=\\theta-180^\\circ$, y da $\\theta_r=30^\\circ$.',
+      'Cuadrante IV, así que la regla que corresponde es $\\theta_r=360^\\circ-\\theta$, y da $\\theta_r=30^\\circ$.'
+    ]);
     const leerC4=lectura(c4);
     actualizarC4();
 
