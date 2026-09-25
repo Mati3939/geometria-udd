@@ -28,6 +28,10 @@ registerModule({
     const nombreT1=el('p',{class:'note'});
     const cajaT1=el('div',{class:'plot'}); t1.append(cajaT1);
     const PT1=Plano(cajaT1,{xMin:-1,xMax:3.6,yMin:-2.8,yMax:2.8,alto:300,iso:true});
+    controlValor(t1,{label:'φ',min:-60,max:60,paso:1,valor:phiT1,unidad:'°',
+      onChange:v=>{ phiT1=v; PT1.redibujar(); actualizarT1(); }});
+    t1.append(nombreT1);
+    const leerT1=lectura(t1);
     PT1.dibujar(P=>{
       P.ejes();
       const rad=phiT1*Math.PI/180;
@@ -43,6 +47,7 @@ registerModule({
       P.texto(O[0],O[1],'observador',{dx:-8,dy:20,tam:11});
       P.texto(objetivo[0],objetivo[1],'objetivo',{dx:8,dy:phiT1>=0?-8:16,tam:11});
       P.texto(rArco*Math.cos(rad/2),rArco*Math.sin(rad/2),'φ',{color:'--s4',dx:8,dy:phiT1>=0?-6:14});
+      leerT1.set([['φ', phiT1+'°'],['tipo', phiT1>=0?'elevación':'depresión']]);
     });
     function actualizarT1(){
       nombreT1.textContent = phiT1>=0
@@ -50,12 +55,6 @@ registerModule({
         : 'φ = '+Math.abs(phiT1)+'° de depresión: el objetivo está abajo de la horizontal.';
     }
     actualizarT1();
-    t1.append(el('div',{class:'controls'},
-      el('label',{},'φ:'),
-      el('input',{type:'range',min:'-60',max:'60',step:'1',value:String(phiT1),
-        oninput:e=>{phiT1=parseInt(e.target.value,10); PT1.redibujar(); actualizarT1();}})
-    ));
-    t1.append(nombreT1);
     t1.append(el('p',{class:'note'},'La línea punteada es la mirada al frente, φ = 0°. Levantar la vista da un ángulo de elevación; bajarla, uno de depresión. Por ángulos alternos internos entre paralelas, el ángulo de elevación medido desde abajo es igual al ángulo de depresión medido desde arriba hacia el mismo punto — el mismo número, dos nombres según quién mira.'));
     sec.append(t1);
 
@@ -80,9 +79,16 @@ registerModule({
     t3.append(el('p',{},'Un observador mira la punta de una torre vertical, parado a una distancia $d$ de la base. El ángulo de elevación $\\theta$ y la distancia $d$ son los datos que se miden en terreno; la altura $h$ de la torre es la que se calcula.'));
 
     let dT3=6, thetaT3=35;
-    const leerT3=el('p',{class:'note'});
     const cajaT3=el('div',{class:'plot'}); t3.append(cajaT3);
     const PT3=Plano(cajaT3,{xMin:-1,xMax:10,yMin:-1.5,yMax:13,alto:360,iso:true});
+    t3.append(el('div',{class:'controls'},
+      el('label',{},'d:'),
+      el('input',{type:'range',min:'3',max:'8',step:'0.2',value:String(dT3),
+        oninput:e=>{dT3=parseFloat(e.target.value); PT3.redibujar();}})
+    ));
+    controlValor(t3,{label:'θ',min:15,max:55,paso:1,valor:thetaT3,unidad:'°',
+      onChange:v=>{ thetaT3=v; PT3.redibujar(); }});
+    const leerT3=lectura(t3);
     PT3.dibujar(P=>{
       P.ejes();
       const rad=thetaT3*Math.PI/180;
@@ -98,17 +104,8 @@ registerModule({
       P.texto(dT3/2,0,'d',{color:'--grid',dy:16});
       P.texto(dT3,h/2,'h',{color:'--s2',dx:10});
       P.texto(arcoR*Math.cos(rad/2),arcoR*Math.sin(rad/2),'θ',{color:'--s4',dx:8,dy:6});
-      leerT3.textContent='d = '+dT3.toFixed(1)+' · θ = '+thetaT3+'° · h = d·tan θ = '+h.toFixed(2);
+      leerT3.set([['d', dT3.toFixed(1)],['θ', thetaT3+'°'],['h = d·tan θ', h.toFixed(2)]]);
     });
-    t3.append(el('div',{class:'controls'},
-      el('label',{},'d:'),
-      el('input',{type:'range',min:'3',max:'8',step:'0.2',value:String(dT3),
-        oninput:e=>{dT3=parseFloat(e.target.value); PT3.redibujar();}}),
-      el('label',{},'θ:'),
-      el('input',{type:'range',min:'15',max:'55',step:'1',value:String(thetaT3),
-        oninput:e=>{thetaT3=parseInt(e.target.value,10); PT3.redibujar();}})
-    ));
-    t3.append(leerT3);
     t3.append(el('p',{class:'note'},'Acá $d$ y $\\theta$ son los datos libres — cada deslizador es independiente del otro, como los dos datos que se miden en terreno — y $h$ es el que queda determinado por ellos: no hace falta un tercer deslizador para $h$, porque una vez fijados $d$ y $\\theta$ no puede ser otra cosa.'));
     t3.append(el('div',{class:'formula',html:'$$h=d\\cdot\\tan\\theta$$'}));
     t3.append(el('p',{class:'note'},'Es la razón trigonométrica básica de un triángulo rectángulo, todavía no el teorema del seno o del coseno: acá el ángulo recto lo pone la torre (vertical) contra el suelo (horizontal). Esos dos teoremas hacen falta cuando el triángulo que se forma no tiene ese ángulo recto de regalo — como en la tarjeta que sigue.'));
@@ -120,9 +117,18 @@ registerModule({
     t4.append(el('p',{},'Cuando el objetivo no se puede alcanzar en línea recta —la otra orilla de un río, un barco en el mar— se toman dos observaciones desde una línea de base $d$ que sí se puede medir. Los ángulos $\\theta_1$ y $\\theta_2$ que cada punto forma con esa base determinan el triángulo entero, y con él, la distancia al objetivo.'));
 
     let dT4=5, th1T4=45, th2T4=50;
-    const leerT4=el('p',{class:'note'});
     const cajaT4=el('div',{class:'plot'}); t4.append(cajaT4);
     const PT4=Plano(cajaT4,{xMin:-1,xMax:9,yMin:-1.5,yMax:9,alto:380,iso:true});
+    t4.append(el('div',{class:'controls'},
+      el('label',{},'d:'),
+      el('input',{type:'range',min:'3',max:'7',step:'0.2',value:String(dT4),
+        oninput:e=>{dT4=parseFloat(e.target.value); PT4.redibujar();}})
+    ));
+    controlValor(t4,{label:'θ1',min:25,max:65,paso:1,valor:th1T4,unidad:'°',
+      onChange:v=>{ th1T4=v; PT4.redibujar(); }});
+    controlValor(t4,{label:'θ2',min:25,max:65,paso:1,valor:th2T4,unidad:'°',
+      onChange:v=>{ th2T4=v; PT4.redibujar(); }});
+    const leerT4=lectura(t4);
     PT4.dibujar(P=>{
       P.ejes();
       const A1=th1T4*Math.PI/180, A2=th2T4*Math.PI/180;
@@ -143,21 +149,14 @@ registerModule({
       P.texto(r1*Math.cos(A1/2),r1*Math.sin(A1/2),'θ1',{color:'--s4',dx:-4,dy:14});
       P.texto(dT4-r2*Math.cos(A2/2),r2*Math.sin(A2/2),'θ2',{color:'--s6',dx:8,dy:14});
       const altura=t*Math.sin(A1);
-      leerT4.textContent='d = '+dT4.toFixed(1)+' · θ1 = '+th1T4+'° · θ2 = '+th2T4
-        +'° · distancia P1-objetivo = '+t.toFixed(2)+' · separación perpendicular a la orilla = '+altura.toFixed(2);
+      leerT4.set([
+        ['d', dT4.toFixed(1)],
+        ['θ1', th1T4+'°'],
+        ['θ2', th2T4+'°'],
+        ['P1-objetivo', t.toFixed(2)],
+        ['altura', altura.toFixed(2)]
+      ]);
     });
-    t4.append(el('div',{class:'controls'},
-      el('label',{},'d:'),
-      el('input',{type:'range',min:'3',max:'7',step:'0.2',value:String(dT4),
-        oninput:e=>{dT4=parseFloat(e.target.value); PT4.redibujar();}}),
-      el('label',{},'θ1:'),
-      el('input',{type:'range',min:'25',max:'65',step:'1',value:String(th1T4),
-        oninput:e=>{th1T4=parseInt(e.target.value,10); PT4.redibujar();}}),
-      el('label',{},'θ2:'),
-      el('input',{type:'range',min:'25',max:'65',step:'1',value:String(th2T4),
-        oninput:e=>{th2T4=parseInt(e.target.value,10); PT4.redibujar();}})
-    ));
-    t4.append(leerT4);
     t4.append(el('p',{class:'note'},'Al mover cualquiera de los tres deslizadores, el triángulo entero se reacomoda: con $d,\\theta_1,\\theta_2$ fijos no queda ningún grado de libertad — el triángulo $P_1P_2(\\text{objetivo})$ queda completamente determinado, exactamente el caso ASA del teorema del seno.'));
     t4.append(el('div',{class:'formula',html:'$$\\overline{P_1\\,\\text{objetivo}}=\\dfrac{d\\cdot\\operatorname{sen}\\theta_2}{\\operatorname{sen}(\\theta_1+\\theta_2)}$$'}));
     t4.append(el('p',{class:'note'},'Sale de aplicar el teorema del seno en el triángulo $P_1P_2(\\text{objetivo})$: el ángulo en el objetivo es $180°-\\theta_1-\\theta_2$ porque los tres ángulos suman $180°$, y $\\operatorname{sen}(180°-\\theta_1-\\theta_2)=\\operatorname{sen}(\\theta_1+\\theta_2)$.'));
