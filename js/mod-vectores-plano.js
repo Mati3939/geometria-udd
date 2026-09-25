@@ -6,6 +6,27 @@ registerModule({
   lead:'Un vector no es un punto: es un desplazamiento, y eso cambia cómo se suman.',
   build(sec){
 
+    const num=n=>(n<0?'−'+(-n):String(n));
+
+    /* Dos catetos rotulados: el tramo horizontal mide la primera componente
+       y el tramo vertical la segunda, cada uno con su color y su valor. Es
+       la misma idea que en las rectas: una componente sin rotular sobre el
+       dibujo obliga a adivinar cuál es cuál. */
+    function catetos(P,x0,y0,c1,c2,nombres){
+      const esq=[x0+c1,y0];
+      P.parametrica(s=>[x0+c1*s,y0],0,1,{color:'--s1',grosor:3});
+      P.parametrica(s=>[esq[0],y0+c2*s],0,1,{color:'--s2',grosor:3});
+      P.texto(x0+c1/2,y0,nombres[0]+' = '+num(Math.round(c1*100)/100),{color:'--s1',dx:-16,dy:c2>=0?18:-10});
+      P.texto(esq[0],y0+c2/2,nombres[1]+' = '+num(Math.round(c2*100)/100),{color:'--s2',dx:c1>=0?9:-46,dy:4});
+    }
+
+    function leyenda(mount,items){
+      const L=el('div',{class:'legend'});
+      items.forEach(([col,txt])=>L.append(el('span',{},
+        el('i',{class:'sw',style:'background:var('+col+')'}),txt)));
+      mount.append(L);
+    }
+
     /* ---------- Tarjeta 1: un vector es un desplazamiento (animada) ---------- */
     const c1=el('div',{class:'card'});
     c1.append(el('h3',{},'Un vector es un desplazamiento, no un punto'));
@@ -15,9 +36,9 @@ registerModule({
     const ANCLAS=[[-2,-1],[0,0],[1.5,1.5],[-1,1.8]];
     const VD=[2,1];
     const nA=ANCLAS.length, tGlide=1.1, tPausa=0.9, tSeg=tGlide+tPausa;
-    const leerC1=el('p',{class:'note'});
     const cajaP1=el('div',{class:'plot'}); c1.append(cajaP1);
     const P1=Plano(cajaP1,{xMin:-2.6,xMax:4,yMin:-1.6,yMax:3.3,alto:340,iso:true});
+    const leerC1=lectura(c1);
     P1.animar((P,t)=>{
       const i=Math.floor(t/tSeg)%nA, j=(i+1)%nA, tl=t%tSeg;
       const s=tl<tGlide?suavizar(tl/tGlide):1;
@@ -26,29 +47,33 @@ registerModule({
       P.ejes();
       ANCLAS.forEach(([px,py])=>P.punto(px,py,{color:'--grid',r:3}));
       P.punto(ax,ay,{color:'--s4',r:4});
+      catetos(P,ax,ay,VD[0],VD[1],['v₁','v₂']);
       P.vector(ax,ay,ax+VD[0],ay+VD[1],{color:'--s7',grosor:3,etiqueta:'v'});
-      leerC1.textContent='punto de partida = ('+ax.toFixed(2)+', '+ay.toFixed(2)+
-        ') · v sigue siendo ('+VD[0]+', '+VD[1]+') en los cuatro casos';
+      leerC1.set([
+        ['punto de partida', '('+ax.toFixed(2)+', '+ay.toFixed(2)+')'],
+        ['v', '('+VD[0]+', '+VD[1]+')']
+      ]);
     },{duracion:nA*tSeg});
-    c1.append(leerC1);
 
-    c1.append(el('p',{},'Los cuatro puntos grises son puntos de partida distintos, y en los cuatro la flecha es ',el('b',{},'idéntica'),': mismo largo, misma dirección. Eso es lo que se anota'));
+    leyenda(c1,[['--grid','puntos de partida posibles'],['--s7','v (la flecha)'],['--s1','v₁ (avance en x)'],['--s2','v₂ (avance en y)']]);
+
+    c1.append(el('p',{},'Los cuatro puntos grises son puntos de partida distintos, y en los cuatro la flecha es ',el('b',{},'idéntica'),': mismo largo, misma dirección. Sus dos catetos —azul y verde— tampoco cambian: son las dos componentes $v_1$ y $v_2$, y eso es lo que se anota'));
     c1.append(el('div',{class:'formula',html:'$$\\vec v=(v_1,v_2),\\qquad \\mathbb{R}^2=\\{(v_1,v_2)\\mid v_1,v_2\\in\\mathbb{R}\\}$$'}));
-    c1.append(el('p',{class:'note'},'Por eso un vector se puede mover «punta con cola» sin que deje de ser el mismo vector: lo único que define a $\\vec v$ son sus dos componentes, no dónde está dibujado.'));
+    c1.append(el('p',{class:'note'},'Por eso un vector se puede mover «punta con cola» sin que deje de ser el mismo vector: lo único que define a $\\vec v$ son sus dos componentes $v_1$ (el cateto azul) y $v_2$ (el cateto verde), no dónde está dibujado.'));
     sec.append(c1);
 
     /* ---------- Tarjeta 2: el vector entre dos puntos (deslizadores) ---------- */
     const c2=el('div',{class:'card'});
     c2.append(el('h3',{},'El vector entre dos puntos: $\\vec{AB}=B-A$'));
-    c2.append(el('p',{},'Si un vector empieza en $P(x_1,y_1)$ y termina en $Q(x_2,y_2)$, sus componentes son la resta punto final menos punto inicial. Al mover los deslizadores de $A$ y $B$ se observa que la flecha ',el('b',{},'AB'),' —la misma idea que en la tarjeta anterior— es siempre igual apenas se la traslada al origen.'));
+    c2.append(el('p',{},'Si un vector empieza en $A(x_1,y_1)$ y termina en $B(x_2,y_2)$, sus componentes son la resta punto final menos punto inicial. Al mover los controles de $A$ y $B$ se observa que la flecha ',el('b',{},'AB'),' —la misma idea que en la tarjeta anterior— es siempre igual apenas se la traslada al origen.'));
 
     let Ax=1,Ay=1,Bx=4,By=3;
-    const leerC2=el('p',{class:'note'});
     const cajaP2=el('div',{class:'plot'}); c2.append(cajaP2);
     const P2=Plano(cajaP2,{xMin:-5,xMax:5,yMin:-5,yMax:5,alto:340,iso:true});
     P2.dibujar(P=>{
       const dx=Bx-Ax, dy=By-Ay;
       P.ejes();
+      catetos(P,Ax,Ay,dx,dy,['dx','dy']);
       P.punto(Ax,Ay,{color:'--s4',r:5,etiqueta:'A'});
       P.punto(Bx,By,{color:'--s4',r:5,etiqueta:'B'});
       P.vector(Ax,Ay,Bx,By,{color:'--s7',grosor:3.2,etiqueta:'AB'});
@@ -56,24 +81,32 @@ registerModule({
       P.punto(dx,dy,{color:'--muted',r:3});
       P.texto(dx,dy,'misma AB, desde O',{color:'--muted',dx:8,dy:-8,tam:11});
     });
+    const leerC2=lectura(c2);
     function actualizarC2(){
+      P2.redibujar();
       const dx=Bx-Ax, dy=By-Ay;
-      leerC2.textContent='A=('+Ax+', '+Ay+')  B=('+Bx+', '+By+')  →  AB = B − A = ('+dx+', '+dy+')  ·  ‖AB‖ = '+Math.hypot(dx,dy).toFixed(3);
+      leerC2.set([
+        ['A', '('+Ax+', '+Ay+')'],
+        ['B', '('+Bx+', '+By+')'],
+        ['AB = B − A', '('+dx+', '+dy+')'],
+        ['‖AB‖', Math.hypot(dx,dy).toFixed(3)]
+      ]);
     }
-    c2.append(el('div',{class:'controls'},
-      el('label',{},'Ax:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(Ax),
-        oninput:e=>{Ax=parseFloat(e.target.value); P2.redibujar(); actualizarC2();}}),
-      el('label',{},'Ay:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(Ay),
-        oninput:e=>{Ay=parseFloat(e.target.value); P2.redibujar(); actualizarC2();}}),
-      el('label',{},'Bx:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(Bx),
-        oninput:e=>{Bx=parseFloat(e.target.value); P2.redibujar(); actualizarC2();}}),
-      el('label',{},'By:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(By),
-        oninput:e=>{By=parseFloat(e.target.value); P2.redibujar(); actualizarC2();}})
-    ));
-    c2.append(leerC2); actualizarC2();
+    controlValor(c2,{label:'Ax',min:-4,max:4,paso:0.5,valor:Ax,unidad:'',
+      onChange:v=>{Ax=v; actualizarC2();}});
+    controlValor(c2,{label:'Ay',min:-4,max:4,paso:0.5,valor:Ay,unidad:'',
+      onChange:v=>{Ay=v; actualizarC2();}});
+    controlValor(c2,{label:'Bx',min:-4.5,max:4.5,paso:0.5,valor:Bx,unidad:'',
+      onChange:v=>{Bx=v; actualizarC2();}});
+    controlValor(c2,{label:'By',min:-4.5,max:4.5,paso:0.5,valor:By,unidad:'',
+      onChange:v=>{By=v; actualizarC2();}});
 
-    c2.append(el('p',{class:'note'},'Por ejemplo, con $A(1,1)$ y $B(4,3)$: $\\vec{AB}=B-A=(4-1,\\,3-1)=(3,2)$ — al llevar los cuatro deslizadores a esos valores, el dibujo confirma el número.'));
-    c2.append(el('div',{class:'formula',html:'$$\\vec{AB}=\\overrightarrow{PQ}=Q-P=(x_2-x_1,\\ y_2-y_1)$$'}));
+    leyenda(c2,[['--s4','A y B'],['--s7','AB (la flecha)'],['--s1','dx = x₂ − x₁'],['--s2','dy = y₂ − y₁']]);
+
+    actualizarC2();
+
+    c2.append(el('p',{class:'note'},'Por ejemplo, con $A(1,1)$ y $B(4,3)$: $\\vec{AB}=B-A=(4-1,\\,3-1)=(3,2)$ — al llevar los cuatro controles a esos valores, el dibujo confirma el número.'));
+    c2.append(el('div',{class:'formula',html:'$$\\vec{AB}=B-A=(x_2-x_1,\\ y_2-y_1)$$'}));
     c2.append(el('p',{class:'note'},'La magnitud de $\\vec{AB}$ es simplemente la distancia entre $A$ y $B$: $\\|\\vec{AB}\\|=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}$.'));
     sec.append(c2);
 
@@ -83,21 +116,21 @@ registerModule({
     c3.append(el('p',{},'Sumar dos vectores es encadenar sus desplazamientos: primero uno, después el otro. Se observa cómo $\\vec v$ se desliza desde el origen hasta la punta de $\\vec u$ — la ',el('b',{},'regla del triángulo'),' — mientras se cierra un paralelogramo con lados $\\vec u$ y $\\vec v$: son la misma suma, vista de dos formas. Después, la misma flecha $-\\vec v$ arma la resta.'));
 
     let u1=3,u2=1,v1=1,v2=2.5;
-    const leerC3=el('p',{class:'note'});
     const cajaP3=el('div',{class:'plot'}); c3.append(cajaP3);
     const P3=Plano(cajaP3,{xMin:-2,xMax:9,yMin:-2.5,yMax:8.5,alto:380,iso:true});
+    const leerC3=lectura(c3);
     P3.animar((P,t)=>{
       const s1_=Math.min(1,t/3);
       const bx=u1*s1_, by=u2*s1_;
       const s2_=Math.min(1,Math.max(0,(t-5)/2));
       const bx2=u1*s2_, by2=u2*s2_;
       P.ejes();
-      P.vector(0,0,u1,u2,{color:'--s1',grosor:3,etiqueta:'u'});
-      P.vector(bx,by,bx+v1,by+v2,{color:'--s2',grosor:3,etiqueta:t<3?'v':''});
+      P.vector(0,0,u1,u2,{color:'--s1',grosor:3,etiqueta:'u = ('+u1+', '+u2+')'});
+      P.vector(bx,by,bx+v1,by+v2,{color:'--s2',grosor:3,etiqueta:t<3?'v = ('+v1+', '+v2+')':''});
       if(t>=3){
         P.parametrica(k=>[v1*k,v2*k],0,1,{color:'--s2',grosor:1.3,guiones:true});
         P.parametrica(k=>[v1+u1*k,v2+u2*k],0,1,{color:'--s1',grosor:1.3,guiones:true});
-        P.vector(0,0,u1+v1,u2+v2,{color:'--s7',grosor:3.4,etiqueta:'u+v'});
+        P.vector(0,0,u1+v1,u2+v2,{color:'--s7',grosor:3.4,etiqueta:'u+v = ('+(u1+v1)+', '+(u2+v2)+')'});
       }
       if(t>=5){
         P.vector(bx2,by2,bx2-v1,by2-v2,{color:'--s8',grosor:2.4,etiqueta:t<7?'−v':''});
@@ -105,23 +138,24 @@ registerModule({
       if(t>=7){
         P.vector(0,0,u1-v1,u2-v2,{color:'--s6',grosor:3.2,etiqueta:'u−v'});
       }
-      leerC3.textContent='u=('+u1+', '+u2+')  v=('+v1+', '+v2+')  →  u+v=('+(u1+v1)+', '+(u2+v2)+')   u−v=('+(u1-v1)+', '+(u2-v2)+')';
+      leerC3.set([
+        ['u', '('+u1+', '+u2+')'],
+        ['v', '('+v1+', '+v2+')'],
+        ['u + v', '('+(u1+v1)+', '+(u2+v2)+')'],
+        ['u − v', '('+(u1-v1)+', '+(u2-v2)+')']
+      ]);
     },{duracion:9});
-    c3.append(leerC3);
 
-    c3.append(el('div',{class:'controls'},
-      el('label',{},'u₁:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(u1),
-        oninput:e=>{u1=parseFloat(e.target.value); actualizarC3text();}}),
-      el('label',{},'u₂:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(u2),
-        oninput:e=>{u2=parseFloat(e.target.value); actualizarC3text();}}),
-      el('label',{},'v₁:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(v1),
-        oninput:e=>{v1=parseFloat(e.target.value); actualizarC3text();}}),
-      el('label',{},'v₂:'), el('input',{type:'range',min:'-4',max:'4',step:'0.5',value:String(v2),
-        oninput:e=>{v2=parseFloat(e.target.value); actualizarC3text();}})
-    ));
-    function actualizarC3text(){
-      leerC3.textContent='u=('+u1+', '+u2+')  v=('+v1+', '+v2+')  →  u+v=('+(u1+v1)+', '+(u2+v2)+')   u−v=('+(u1-v1)+', '+(u2-v2)+')';
-    }
+    controlValor(c3,{label:'u₁',min:-4,max:4,paso:0.5,valor:u1,unidad:'',
+      onChange:v=>{u1=v;}});
+    controlValor(c3,{label:'u₂',min:-4,max:4,paso:0.5,valor:u2,unidad:'',
+      onChange:v=>{u2=v;}});
+    controlValor(c3,{label:'v₁',min:-4,max:4,paso:0.5,valor:v1,unidad:'',
+      onChange:v=>{v1=v;}});
+    controlValor(c3,{label:'v₂',min:-4,max:4,paso:0.5,valor:v2,unidad:'',
+      onChange:v=>{v2=v;}});
+
+    leyenda(c3,[['--s1','u'],['--s2','v'],['--s7','u + v'],['--s8','−v'],['--s6','u − v']]);
 
     c3.append(el('div',{class:'formula',html:'$$\\vec u+\\vec v=(u_1+v_1,\\ u_2+v_2)$$'}));
     c3.append(el('p',{},'Restar es sumar el opuesto: $\\vec u-\\vec v=\\vec u+(-\\vec v)$. En el mismo dibujo, $-\\vec v$ sale de la punta de $\\vec u$ apuntando al revés que $\\vec v$, y su propia punta marca $\\vec u-\\vec v$.'));
@@ -132,37 +166,41 @@ registerModule({
     /* ---------- Tarjeta 4: producto por un escalar (deslizador) ---------- */
     const c4=el('div',{class:'card'});
     c4.append(el('h3',{},'Producto por un escalar: estirar, achicar y dar la vuelta'));
-    c4.append(el('p',{},'Multiplicar $\\vec v$ por un número real $\\lambda$ escala su largo por $|\\lambda|$ y, si $\\lambda$ es negativo, invierte su sentido $180^\\circ$. Al mover el deslizador por valores negativos se ve al vector ',el('b',{},'dar la vuelta'),' al cruzar $\\lambda=0$.'));
+    c4.append(el('p',{},'Multiplicar $\\vec v$ por un número real $\\lambda$ escala su largo por $|\\lambda|$ y, si $\\lambda$ es negativo, invierte su sentido $180^\\circ$. Al mover el control por valores negativos se ve al vector ',el('b',{},'dar la vuelta'),' al cruzar $\\lambda=0$.'));
 
     let lam=1.5; const vFijo=[2,1];
-    const leerC4=el('p',{class:'note'});
     const cajaP4=el('div',{class:'plot'}); c4.append(cajaP4);
     const P4=Plano(cajaP4,{xMin:-6.5,xMax:6.5,yMin:-4,yMax:4,alto:340,iso:true});
     P4.dibujar(P=>{
       P.ejes();
-      P.vector(0,0,vFijo[0],vFijo[1],{color:'--s1',grosor:2.6,etiqueta:'v'});
+      P.vector(0,0,vFijo[0],vFijo[1],{color:'--s1',grosor:2.6,etiqueta:'v = ('+vFijo[0]+', '+vFijo[1]+')'});
       const lx=lam*vFijo[0], ly=lam*vFijo[1];
       if(Math.abs(lam)>1e-6){
         const col=lam<0?'--s8':'--s7';
-        P.vector(0,0,lx,ly,{color:col,grosor:3.2,etiqueta:'λv'});
+        P.vector(0,0,lx,ly,{color:col,grosor:3.2,etiqueta:'λv = ('+lx.toFixed(1)+', '+ly.toFixed(1)+')'});
       } else {
         P.punto(0,0,{color:'--muted',r:5,etiqueta:'λv = 0⃗'});
       }
     });
+    const leerC4=lectura(c4);
     function actualizarC4(){
+      P4.redibujar();
       const lx=lam*vFijo[0], ly=lam*vFijo[1];
       const magV=Math.hypot(vFijo[0],vFijo[1]);
-      let signo=' · λ>0: mismo sentido que v';
-      if(lam<0) signo=' · λ<0: apunta al revés de v';
-      else if(Math.abs(lam)<1e-6) signo=' · λ=0: colapsa al origen';
-      leerC4.textContent='λ = '+lam.toFixed(1)+'  ·  λv = ('+lx.toFixed(1)+', '+ly.toFixed(1)+')  ·  ‖v‖ = '+magV.toFixed(3)+'  ·  ‖λv‖ = '+Math.abs(lam*magV).toFixed(3)+signo;
+      let sentido='mismo que v';
+      if(lam<0) sentido='opuesto a v';
+      else if(Math.abs(lam)<1e-6) sentido='nulo';
+      leerC4.set([
+        ['λ', lam.toFixed(1)],
+        ['λv', '('+lx.toFixed(1)+', '+ly.toFixed(1)+')'],
+        ['‖v‖', magV.toFixed(3)],
+        ['‖λv‖', Math.abs(lam*magV).toFixed(3)],
+        ['sentido', sentido]
+      ]);
     }
-    c4.append(el('div',{class:'controls'},
-      el('label',{},'λ:'),
-      el('input',{type:'range',min:'-3',max:'3',step:'0.1',value:String(lam),
-        oninput:e=>{ lam=parseFloat(e.target.value); P4.redibujar(); actualizarC4(); }})
-    ));
-    c4.append(leerC4); actualizarC4();
+    controlValor(c4,{label:'λ',min:-3,max:3,paso:0.1,valor:lam,unidad:'',
+      onChange:v=>{ lam=v; P4.redibujar(); actualizarC4(); }});
+    actualizarC4();
 
     c4.append(el('div',{class:'formula',html:'$$\\lambda\\vec v=(\\lambda v_1,\\ \\lambda v_2),\\qquad \\|\\lambda\\vec v\\|=|\\lambda|\\,\\|\\vec v\\|$$'}));
     c4.append(el('p',{class:'note'},'Con $\\lambda=-1$ el vector no cambia de largo, solo de sentido: es exactamente el $-\\vec v$ que usamos en la tarjeta anterior para armar la resta. Con $\\lambda=0$ no queda ningún vector — colapsa al vector nulo $\\vec 0$.'));

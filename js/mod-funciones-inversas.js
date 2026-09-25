@@ -60,7 +60,7 @@ registerModule({
     const cajaC2=el('div',{class:'plot'}); c2.append(cajaC2);
     const xMinC2=-5*Math.PI/2, xMaxC2=5*Math.PI/2;
     const P2=Plano(cajaC2,{xMin:xMinC2,xMax:xMaxC2,yMin:-2.1,yMax:2.1,alto:320});
-    function arcsinSen(x){ return Math.asin(Math.sin(x)); }
+    function arcsenDeSen(x){ return Math.asin(Math.sin(x)); }
     P2.dibujar(P=>{
       P.ejes();
       /* UNA sola franja, y es el recorrido de arcsen: [−π/2, π/2]. Ahí y solo
@@ -69,8 +69,8 @@ registerModule({
          esta franja, así que ahí el diente de sierra NO toca la diagonal. */
       P.region(()=>2.1,()=>-2.1,-Math.PI/2,Math.PI/2,{color:'--s2',alpha:0.12});
       P.curva(x=>x,{color:'--grid',grosor:1.4,guiones:true});
-      P.curva(arcsinSen,{color:'--s1',grosor:2.4});
-      const y0=arcsinSen(xC2);
+      P.curva(arcsenDeSen,{color:'--s1',grosor:2.4});
+      const y0=arcsenDeSen(xC2);
       P.punto(xC2,y0,{color:'--s7',r:6});
     });
     controlValor(c2,{label:'x',min:-7.85,max:7.85,paso:0.02,valor:xC2,unidad:'',
@@ -80,7 +80,7 @@ registerModule({
     leerC2a=textoVivo(c2).calibrar([MSG_DENTRO,MSG_FUERA]);
     const leerC2b=lectura(c2);
     function actualizarC2(){
-      const y0=arcsinSen(xC2);
+      const y0=arcsenDeSen(xC2);
       const coincide=Math.abs(y0-xC2)<1e-9;
       leerC2a.set(coincide?MSG_DENTRO:MSG_FUERA);
       leerC2b.set([

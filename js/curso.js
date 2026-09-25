@@ -1,6 +1,6 @@
-/* Metadatos del ramo. A propósito NO hay calendarización: ni semanas, ni fechas
-   de control, ni ponderaciones. Esta app existe para que alguien que no entiende
-   un tema lo pueda ver animado; el calendario vive en Canvas, no acá. */
+/* Metadatos del ramo. A propósito NO hay calendarización: ni semanas, ni fechas,
+   ni ponderaciones. Esta app existe para que alguien que no entiende un tema lo
+   pueda ver animado. */
 window.CURSO={
   slug:'geometria',
   titulo:'Geometría',
