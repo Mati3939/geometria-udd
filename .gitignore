@@ -13,6 +13,8 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Guía interna de contribución: contiene rutas locales y decisiones de diseño,
-# no debe publicarse en el repo.
+# Notas de trabajo. El sitio se sirve desde la raíz del repo, así que todo lo
+# versionado queda accesible por URL; estos dos nombran el material del ramo y
+# sus rutas en disco, y no deben salir de la máquina.
 CONTRIBUIR.md
+CLAUDE.md
