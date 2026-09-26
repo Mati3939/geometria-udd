@@ -161,7 +161,10 @@ function buildShell(){
   nav.append(fila);
   unidadesDe().forEach(u=>{
     const temas=temasDe(u);
-    const et=u==='inicio'?'🏠 Inicio':('Unidad '+u+(window.CURSO.unidades[u]?' · '+window.CURSO.unidades[u]:''));
+    const et=u==='inicio'?'🏠 Inicio':u==='lab'?'🧪 Laboratorio':('Unidad '+u+(window.CURSO.unidades[u]?' · '+window.CURSO.unidades[u]:''));
+    /* una unidad de un solo tema (Inicio, Laboratorio) es un botón directo:
+       un panel con una única opción obligaba a dos toques en el teléfono */
+    const solo=temas.length===1;
     /* El botón de la unidad es de UNA línea. Antes llevaba una segunda con el
        tema actual, y eso obligaba a darle a toda la fila el alto de dos líneas
        —el header sticky se comía el 11% de la pantalla—. El tema en el que uno
@@ -179,7 +182,7 @@ function buildShell(){
         el('span',{class:'n'},i<9?String(i+1):'·'),el('span',{class:'t'},m.title));
       b.dataset.mod=m.id; menu.append(b);
     });
-    const caja=el('div',{class:'unidad'},btn,menu);
+    const caja=el('div',{class:'unidad'+(solo?' solo':'')},btn,menu);
     caja.dataset.unidad=u;
     /* El panel cuelga a la izquierda de su unidad; si con eso se pasa del borde
        derecho de la pantalla, se ancla a la derecha (.der). Se mide en vez de
@@ -212,6 +215,7 @@ function buildShell(){
     caja.addEventListener('pointerenter',ubicar);
     caja.addEventListener('focusin',ubicar);
     btn.onclick=()=>{
+      if(solo){ cerrarMenus(); activate(temas[0].id); btn.blur(); return; }
       if(hayHover()){
         /* el panel ya está a la vista por hover: el clic en la cabecera es un
            atajo al primer tema. blur() para que :focus-within no lo deje

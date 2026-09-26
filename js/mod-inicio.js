@@ -13,9 +13,10 @@ registerModule({
     intro.append(el('p',{},'En la barra de arriba se elige la unidad y, dentro de ella, el tema. Cada tema es una pantalla sola: las figuras se mueven con ',el('b',{},'▶ Reproducir'),' y los deslizadores cambian los datos del dibujo. Conviene moverlos y observar qué cambia.'));
     intro.append(el('p',{class:'note'},'Atajos de teclado: las teclas $1$ a $9$ saltan entre los temas de la unidad actual, y ',el('b',{},'Inicio'),' vuelve a esta pantalla. El botón 🌗 de arriba a la derecha alterna entre claro y oscuro.'));
     intro.append(el('p',{class:'note'},'Cada tema tiene su propia dirección, así que se puede compartir el enlace de uno puntual.'));
+    intro.append(el('p',{},'La última pestaña, ',el('b',{},'🧪 Laboratorio'),', es un plano libre: se agregan rectas, vectores y cónicas —con un clic o escribiendo su ecuación general— y la app indica sus elementos y cómo se relacionan entre sí. Sirve para comprobar un resultado propio o para explorar qué pasa al cambiar un dato.'));
     sec.append(intro);
 
-    const unidades=[...new Set(window.MODULES.map(m=>m.unidad))].filter(u=>u!=='inicio');
+    const unidades=[...new Set(window.MODULES.map(m=>m.unidad))].filter(u=>u!=='inicio'&&u!=='lab');
     unidades.forEach(u=>{
       const temas=window.MODULES.filter(m=>m.unidad===u);
       if(!temas.length)return;
