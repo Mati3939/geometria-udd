@@ -181,7 +181,7 @@ registerModule({
       const y=Math.sqrt(1-xC5*xC5), thO=Math.acos(xC5), thB=Math.atan(xC5/y);
       leerC5.set([
         ['x', xC5.toFixed(2)],
-        ['ángulo en el origen (arccos x)', thO.toFixed(3)+' rad'],
+        ['arccos x', thO.toFixed(3)+' rad'],
         ['ángulo de arriba (arctan)', thB.toFixed(3)+' rad'],
         ['suma', (thO+thB).toFixed(3)+' (π/2 ≈ '+(Math.PI/2).toFixed(3)+')']
       ]);

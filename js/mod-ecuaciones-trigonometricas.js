@@ -47,7 +47,7 @@ registerModule({
         : 'Con $|a|\\gt 1$ la recta no llega a tocar la curva en ningún punto: la ecuación no tiene solución.');
     },{duracion:8});
 
-    c1.append(el('p',{},'Cuando $|a|\\le 1$ aparecen ',el('b',{},'dos'),' familias de cortes, una por cada vuelta: una nace en $\\operatorname{arcsen} a$ y avanza de a $2\\pi$ (puntos verdes), la otra nace en $\\pi-\\operatorname{arcsen} a$ y avanza también de a $2\\pi$ (puntos violeta). Cuando $|a|>1$ la recta queda por completo arriba o por completo abajo de la curva: no hay ningún corte, y la ecuación no tiene solución.'));
+    c1.append(el('p',{},'Cuando $|a|\\le 1$ aparecen ',el('b',{},'dos'),' familias de cortes, una por cada vuelta: una nace en $\\operatorname{arcsen} a$ y avanza de a $2\\pi$ (puntos verdes), la otra nace en $\\pi-\\operatorname{arcsen} a$ y avanza también de a $2\\pi$ (puntos violeta). Cuando $|a|\\gt1$ la recta queda por completo arriba o por completo abajo de la curva: no hay ningún corte, y la ecuación no tiene solución.'));
     c1.append(el('div',{class:'formula',html:'$$\\operatorname{sen}(x)=a,\\ |a|\\le 1 \\;\\Longrightarrow\\; x=\\operatorname{arcsen} a+2k\\pi \\quad\\text{ó}\\quad x=\\pi-\\operatorname{arcsen} a+2k\\pi,\\qquad k\\in\\mathbb{Z}$$'}));
     c1.append(el('p',{class:'note'},'Las dos familias hacen falta: quedarse solo con $x=\\operatorname{arcsen} a+2k\\pi$ deja fuera la mitad de las soluciones, que son justamente los puntos violeta del dibujo. $\\operatorname{arcsen} a$ entrega un único ángulo —el de $\\left[-\\tfrac\\pi2,\\tfrac\\pi2\\right]$—, y la simetría de la circunferencia respecto del eje $y$ aporta el segundo.'));
     c1.append(el('p',{class:'note'},'Ejemplo: $2\\operatorname{sen}(x)+1=0$ da $\\operatorname{sen}x=-\\tfrac12$, y con $\\operatorname{arcsen}(-\\tfrac12)=-\\pi/6$ las dos familias caen en $x=\\tfrac{7\\pi}{6}+2k\\pi$ y $x=\\tfrac{11\\pi}{6}+2k\\pi$.'));
@@ -79,7 +79,7 @@ registerModule({
     function actualizarC2(){
       const th=thC2*Math.PI/180, cx=Math.cos(th), cy=Math.sin(th);
       if(modoC2==='sen'){
-        leerC2.set([['θ', thC2+'°'],['sen θ', cy.toFixed(3)],['ángulo con el mismo seno', 'π−θ = '+(180-thC2)+'°']]);
+        leerC2.set([['θ', thC2+'°'],['sen θ', cy.toFixed(3)],['mismo seno', '180°−θ = '+(180-thC2)+'°']]);
       } else {
         leerC2.set([['θ', thC2+'°'],['cos θ', cx.toFixed(3)],['ángulo con el mismo coseno', '−θ = '+(-thC2)+'°']]);
       }
