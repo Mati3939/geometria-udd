@@ -1,35 +1,35 @@
 /* ============ Paleta y temas ============ */
 :root{
   color-scheme:light;
-  --bg:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#6b6a65;
-  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
-  --s1:#2a78d6; --s2:#008300; --s3:#e87ba4; --s4:#eda100; --s5:#1baf7a; --s6:#eb6834; --s7:#4a3aa7; --s8:#e34948;
-  --seq100:#cde2fb; --seq200:#9ec5f4; --seq300:#6da7ec; --seq400:#3987e5; --seq500:#256abf; --seq600:#184f95; --seq700:#0d366b;
+  --bg:#ffffff; --surface:#f4f3fb; --ink:#101014; --ink2:#4a4a52; --muted:#6f6f78;
+  --grid:#e4e2ee; --axis:#c7c3d6; --border:rgba(16,16,20,.12);
+  --s1:#4338ca; --s2:#15803d; --s3:#be185d; --s4:#b45309; --s5:#0f766e; --s6:#c2410c; --s7:#7e22ce; --s8:#b91c1c;
+  --seq100:#e4defb; --seq200:#c9baf5; --seq300:#a68eee; --seq400:#8265e2; --seq500:#5f45bf; --seq600:#453096; --seq700:#2c1e66;
   --cell:46px; --cellgap:6px;
   font-size:16px;
   /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
   --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
-  --pendiente:#8b8a85;
+  --pendiente:#86868f;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme=light]){
     color-scheme:dark;
-    --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
-    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
-    --s1:#3987e5; --s2:#00a300; --s3:#d55181; --s4:#c98500; --s5:#199e70; --s6:#d95926; --s7:#9085e9; --s8:#e66767;
+    --bg:#0a0a0d; --surface:#201f2c; --ink:#f5f4fa; --ink2:#c9c7d6; --muted:#8d8b9c;
+    --grid:#2b2938; --axis:#3c3950; --border:rgba(245,244,250,.14);
+    --s1:#6f62e3; --s2:#34b366; --s3:#ec6bb0; --s4:#f0a949; --s5:#2dd4bf; --s6:#fb8b3c; --s7:#b083f0; --s8:#f2685f;
     /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
     --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
-    --pendiente:#8b8a85;
+    --pendiente:#706e7d;
   }
 }
 :root[data-theme=dark]{
   color-scheme:dark;
-  --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
-  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
-  --s1:#3987e5; --s2:#00a300; --s3:#d55181; --s4:#c98500; --s5:#199e70; --s6:#d95926; --s7:#9085e9; --s8:#e66767;
+  --bg:#0a0a0d; --surface:#201f2c; --ink:#f5f4fa; --ink2:#c9c7d6; --muted:#8d8b9c;
+  --grid:#2b2938; --axis:#3c3950; --border:rgba(245,244,250,.14);
+  --s1:#6f62e3; --s2:#34b366; --s3:#ec6bb0; --s4:#f0a949; --s5:#2dd4bf; --s6:#fb8b3c; --s7:#b083f0; --s8:#f2685f;
   /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
   --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
-  --pendiente:#8b8a85;
+  --pendiente:#706e7d;
 }
 :root.presenta{ font-size:20px; --cell:64px; --cellgap:8px; }
 /* Modo "dentro del libro" (?libro): la página va embebida en un <iframe> en la
