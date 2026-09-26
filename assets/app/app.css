@@ -3,7 +3,7 @@
   color-scheme:light;
   --bg:#ffffff; --surface:#f4f3fb; --ink:#101014; --ink2:#4a4a52; --muted:#6f6f78;
   --grid:#e4e2ee; --axis:#c7c3d6; --border:rgba(16,16,20,.12);
-  --s1:#4338ca; --s2:#15803d; --s3:#be185d; --s4:#b45309; --s5:#0f766e; --s6:#c2410c; --s7:#7e22ce; --s8:#b91c1c;
+  --s1:#3446d4; --s2:#15803d; --s3:#be185d; --s4:#b45309; --s5:#0f766e; --s6:#c2410c; --s7:#9333ea; --s8:#b91c1c;
   --seq100:#e4defb; --seq200:#c9baf5; --seq300:#a68eee; --seq400:#8265e2; --seq500:#5f45bf; --seq600:#453096; --seq700:#2c1e66;
   --cell:46px; --cellgap:6px;
   font-size:16px;
@@ -16,7 +16,7 @@
     color-scheme:dark;
     --bg:#0a0a0d; --surface:#201f2c; --ink:#f5f4fa; --ink2:#c9c7d6; --muted:#8d8b9c;
     --grid:#2b2938; --axis:#3c3950; --border:rgba(245,244,250,.14);
-    --s1:#6f62e3; --s2:#34b366; --s3:#ec6bb0; --s4:#f0a949; --s5:#2dd4bf; --s6:#fb8b3c; --s7:#b083f0; --s8:#f2685f;
+    --s1:#5f6ff0; --s2:#34b366; --s3:#ec6bb0; --s4:#f0a949; --s5:#2dd4bf; --s6:#fb8b3c; --s7:#c084fc; --s8:#f2685f;
     /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
     --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
     --pendiente:#706e7d;
@@ -26,7 +26,7 @@
   color-scheme:dark;
   --bg:#0a0a0d; --surface:#201f2c; --ink:#f5f4fa; --ink2:#c9c7d6; --muted:#8d8b9c;
   --grid:#2b2938; --axis:#3c3950; --border:rgba(245,244,250,.14);
-  --s1:#6f62e3; --s2:#34b366; --s3:#ec6bb0; --s4:#f0a949; --s5:#2dd4bf; --s6:#fb8b3c; --s7:#b083f0; --s8:#f2685f;
+  --s1:#5f6ff0; --s2:#34b366; --s3:#ec6bb0; --s4:#f0a949; --s5:#2dd4bf; --s6:#fb8b3c; --s7:#c084fc; --s8:#f2685f;
   /* acentos de semestre — NO confundir con --s1..--s8, que son colores de serie */
   --sem1:#1baf7a; --sem2:#2a78d6; --sem3:#4a3aa7; --sem-actual:#eda100;
   --pendiente:#706e7d;
