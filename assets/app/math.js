@@ -372,8 +372,8 @@ function Espacio(mount, opts){
   E.texto3=function(p,s,op){
     op=op||{}; const c=L.ctx, P=proy(p);
     c.save(); c.fillStyle=colorVar(op.color||'--muted');
-    c.font='12px ui-monospace, Consolas, monospace';
-    c.fillText(s,P[0]+5,P[1]-5); c.restore();
+    c.font=(op.tam||12)+'px ui-monospace, Consolas, monospace';
+    c.fillText(s,P[0]+(op.dx??5),P[1]+(op.dy??-5)); c.restore();
   };
 
   E.girar=function(dth,dph){ th+=dth; ph=Math.max(-1.4,Math.min(1.4,ph+dph)); E.redibujar(); };
